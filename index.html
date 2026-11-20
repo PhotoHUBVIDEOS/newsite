@@ -42,7 +42,7 @@
       top: 0;
       z-index: 30;
       backdrop-filter: blur(14px);
-      background: rgba(15, 23, 42, 0.82);
+      background: rgba(15, 23, 42, 0.85);
       border-bottom: 1px solid var(--border);
       padding: 14px 20px;
     }
@@ -61,6 +61,7 @@
       display: flex;
       align-items: center;
       gap: 11px;
+      cursor: pointer;
     }
 
     .brand-logo {
@@ -105,7 +106,8 @@
       color: var(--text-main);
     }
 
-    button {
+    button,
+    a.btn-link {
       border: none;
       border-radius: 9px;
       padding: 9px 14px;
@@ -113,16 +115,16 @@
       font-size: 13px;
       cursor: pointer;
       color: #fff;
-      transition: transform 0.18s ease, background 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.18s ease, background 0.2s ease, opacity 0.2s ease;
     }
 
-    button:active {
+    button:active,
+    a.btn-link:active {
       transform: scale(0.97);
-    }
-
-    button:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
     }
 
     .btn-red {
@@ -130,7 +132,7 @@
       box-shadow: 0 4px 14px rgba(239, 68, 68, 0.26);
     }
 
-    .btn-red:hover:not(:disabled) {
+    .btn-red:hover {
       background: var(--accent-hover);
       transform: translateY(-1px);
     }
@@ -140,7 +142,7 @@
       box-shadow: 0 4px 14px rgba(79, 70, 229, 0.26);
     }
 
-    .btn-indigo:hover:not(:disabled) {
+    .btn-indigo:hover {
       background: var(--indigo-hover);
       transform: translateY(-1px);
     }
@@ -151,58 +153,28 @@
       color: var(--text-main);
     }
 
-    .btn-ghost:hover:not(:disabled) {
+    .btn-ghost:hover {
       background: rgba(255, 255, 255, 0.15);
     }
 
-    /* Container */
+    .nav-btn.active-nav {
+      outline: 2px solid rgba(255, 255, 255, 0.28);
+    }
+
+    /* Container & Views */
     .container {
       max-width: 1180px;
       margin: 26px auto 0;
       padding: 0 20px;
     }
 
-    /* Protected Studio / Control Panel */
-    .studio-panel {
+    .page-view {
       display: none;
-      background: linear-gradient(145deg, rgba(18, 18, 18, 0.96), rgba(30, 41, 59, 0.75));
-      border: 1px solid rgba(79, 70, 229, 0.4);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 26px;
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
-      animation: fadeSlideDown 0.35s ease both;
+      animation: fadeView 0.24s ease both;
     }
 
-    .studio-panel.visible {
+    .page-view.active {
       display: block;
-    }
-
-    .studio-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(79, 70, 229, 0.2);
-      color: #c7d2fe;
-      border: 1px solid rgba(129, 140, 248, 0.35);
-      padding: 5px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .studio-form {
-      margin-top: 14px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 12px;
-    }
-
-    .studio-msg {
-      margin-top: 10px;
-      font-size: 13px;
-      min-height: 18px;
-      color: #4ade80;
     }
 
     /* Toolbar */
@@ -213,7 +185,6 @@
       gap: 12px;
       flex-wrap: wrap;
       margin-bottom: 24px;
-      animation: fadeSlideDown 0.45s ease both;
     }
 
     .toolbar-left {
@@ -266,9 +237,6 @@
       background: var(--bg-card);
       border: 1px solid var(--border);
       color: var(--text-muted);
-      padding: 8px 14px;
-      border-radius: 9px;
-      font-size: 13px;
     }
 
     .tab-btn.active {
@@ -278,7 +246,7 @@
       box-shadow: 0 4px 14px rgba(239, 68, 68, 0.28);
     }
 
-    /* Post Cards Grid */
+    /* Cards Grid */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
@@ -293,14 +261,13 @@
       display: flex;
       flex-direction: column;
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.36);
-      transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.26s ease, border-color 0.26s ease;
-      animation: cardPop 0.44s cubic-bezier(0.22, 1, 0.36, 1) both;
+      transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
     }
 
     .post-card:hover {
-      transform: translateY(-7px);
+      transform: translateY(-6px);
       border-color: rgba(239, 68, 68, 0.5);
-      box-shadow: 0 20px 38px rgba(0, 0, 0, 0.55);
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.52);
     }
 
     .thumb-box {
@@ -317,61 +284,11 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.42s ease, filter 0.3s ease;
+      transition: transform 0.36s ease;
     }
 
     .post-card:hover .thumb-box img {
-      transform: scale(1.07);
-      filter: brightness(0.82);
-    }
-
-    .thumb-gradient {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 35%, rgba(0, 0, 0, 0.78) 100%);
-      pointer-events: none;
-    }
-
-    .duration-badge {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      background: rgba(15, 23, 42, 0.86);
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      color: #f8fafc;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 6px;
-      z-index: 2;
-    }
-
-    .watch-pill {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transform: scale(0.92);
-      transition: opacity 0.24s ease, transform 0.24s ease;
-      z-index: 2;
-    }
-
-    .thumb-box:hover .watch-pill {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .watch-pill span {
-      background: rgba(239, 68, 68, 0.95);
-      color: #fff;
-      font-size: 13px;
-      font-weight: 700;
-      padding: 9px 16px;
-      border-radius: 999px;
-      box-shadow: 0 10px 24px rgba(239, 68, 68, 0.5);
+      transform: scale(1.06);
     }
 
     .no-thumb {
@@ -382,17 +299,10 @@
       justify-content: center;
       color: var(--text-muted);
       font-size: 13px;
-      background: repeating-linear-gradient(
-        -45deg,
-        #182235,
-        #182235 10px,
-        #1e293b 10px,
-        #1e293b 20px
-      );
     }
 
     .post-content {
-      padding: 15px 16px 16px;
+      padding: 15px 16px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -402,9 +312,8 @@
 
     .post-top {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      align-items: center;
       font-size: 11px;
       color: var(--text-muted);
       margin-bottom: 8px;
@@ -413,93 +322,35 @@
     .badge-group {
       background: rgba(79, 70, 229, 0.22);
       color: #a5b4fc;
-      border: 1px solid rgba(129, 140, 248, 0.28);
       padding: 3px 9px;
       border-radius: 999px;
       font-weight: 700;
-      font-size: 11px;
     }
 
     .badge-manual {
       background: rgba(239, 68, 68, 0.18);
       color: #fca5a5;
-      border: 1px solid rgba(248, 113, 113, 0.28);
       padding: 3px 9px;
       border-radius: 999px;
       font-weight: 700;
-      font-size: 11px;
     }
 
     .post-title {
       font-size: 15px;
       font-weight: 700;
       line-height: 1.45;
-      color: var(--text-main);
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      word-break: break-word;
     }
 
     .post-footer {
       display: flex;
-      align-items: center;
       gap: 8px;
       flex-wrap: wrap;
       padding-top: 10px;
       border-top: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .link-btn {
-      text-decoration: none;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #fff;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: transform 0.18s ease, background 0.2s ease;
-    }
-
-    .link-btn:hover {
-      transform: translateY(-1px);
-    }
-
-    /* Skeleton Loader */
-    .skeleton-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .shimmer {
-      background: linear-gradient(90deg, #161e2e 25%, #233049 50%, #161e2e 75%);
-      background-size: 200% 100%;
-      animation: shimmerMove 1.4s infinite linear;
-    }
-
-    .skel-thumb {
-      aspect-ratio: 16 / 9;
-      width: 100%;
-    }
-
-    .skel-body {
-      padding: 16px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .skel-line {
-      height: 14px;
-      border-radius: 6px;
-    }
-
-    .skel-line.short {
-      width: 55%;
     }
 
     .empty-state {
@@ -512,69 +363,92 @@
       color: var(--text-muted);
     }
 
-    /* Modals */
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.84);
-      backdrop-filter: blur(6px);
-      z-index: 60;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-
-    .modal.open {
-      display: flex;
-      animation: fadeIn 0.22s ease both;
-    }
-
-    .modal-box {
-      width: 100%;
-      max-width: 740px;
+    /* Watch View */
+    .watch-card {
+      max-width: 920px;
+      margin: 0 auto;
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 18px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
-      animation: modalScale 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+      padding: 20px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
     }
 
-    .modal-box.small {
-      max-width: 400px;
-    }
-
-    .modal-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .modal-title {
-      font-size: 16px;
-      font-weight: 700;
-      word-break: break-word;
+    .watch-hero-img {
+      width: 100%;
+      max-height: 450px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 16px;
     }
 
     video {
       width: 100%;
-      max-height: 440px;
-      border-radius: 10px;
+      max-height: 460px;
+      border-radius: 12px;
       background: #000;
+      margin-bottom: 16px;
     }
 
-    .form-stack {
+    .watch-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .watch-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .watch-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Studio View */
+    .studio-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 22px;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    .studio-login-box {
+      max-width: 420px;
+      margin: 12px auto;
+    }
+
+    .studio-form {
       display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 12px;
+      margin-top: 14px;
     }
 
-    .error-text {
-      color: #f87171;
+    .studio-msg {
+      margin-top: 10px;
       font-size: 13px;
       min-height: 18px;
+      color: #4ade80;
+    }
+
+    .manage-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      flex-wrap: wrap;
+    }
+
+    .manage-row:last-child {
+      border-bottom: none;
     }
 
     /* Toast */
@@ -594,7 +468,7 @@
       opacity: 0;
       transform: translateY(10px);
       pointer-events: none;
-      transition: opacity 0.22s ease, transform 0.22s ease;
+      transition: opacity 0.2s ease, transform 0.2s ease;
     }
 
     .toast.show {
@@ -602,129 +476,94 @@
       transform: translateY(0);
     }
 
-    @keyframes shimmerMove {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes modalScale {
-      from { opacity: 0; transform: scale(0.94); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes fadeSlideDown {
-      from { opacity: 0; transform: translateY(-10px); }
+    @keyframes fadeView {
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes cardPop {
-      from { opacity: 0; transform: translateY(16px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
     }
   </style>
 </head>
 <body>
+  <!-- Shared Navigation -->
   <nav class="navbar">
     <div class="nav-inner">
-      <div class="brand">
+      <div class="brand" id="brandHomeBtn">
         <div class="brand-logo">PH</div>
         <div class="brand-title">Photo<span>Hub</span> Vault</div>
       </div>
 
       <div class="nav-actions">
         <div class="stat-pill">Total Posts: <strong id="videoCount">0</strong></div>
-        <button id="openLoginBtn" class="btn-ghost">Member Sign In</button>
+        <button id="navHomeBtn" class="btn-ghost nav-btn active-nav">Home</button>
+        <button id="navStudioBtn" class="btn-indigo nav-btn">Studio</button>
         <button id="logoutBtn" class="btn-ghost" style="display: none;">Sign Out</button>
       </div>
     </div>
   </nav>
 
   <main class="container">
-    <!-- Protected Studio / Control Panel -->
-    <section id="studioPanel" class="studio-panel">
-      <span class="studio-badge">STUDIO ACCESS • chathumal</span>
-      <h2 style="margin-top: 8px; font-size: 18px;">Publish New Video Post</h2>
-      <form id="addVideoForm" class="studio-form">
-        <input type="text" id="addTitle" placeholder="Video Title" required />
-        <input type="url" id="addThumb" placeholder="Thumbnail Photo URL (https://...)" />
-        <input type="url" id="addVideo" placeholder="Video URL (.mp4) or Telegram Link" required />
-        <button type="submit" class="btn-red">Publish Post</button>
-      </form>
-      <div id="studioMsg" class="studio-msg"></div>
+    <!-- PAGE 1: HOME / VAULT VIEW -->
+    <section id="viewHome" class="page-view active">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search video posts by title..." />
+          </div>
+          <select id="sortSelect" aria-label="Sort posts">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="az">Title (A - Z)</option>
+          </select>
+        </div>
+
+        <div class="tabs">
+          <button class="tab-btn active" data-filter="all">All Posts</button>
+          <button class="tab-btn" data-filter="group">Group Sync</button>
+          <button class="tab-btn" data-filter="manual">Studio</button>
+        </div>
+      </div>
+
+      <div id="videoGrid" class="grid"></div>
     </section>
 
-    <!-- Search, Sort & Filter -->
-    <div class="toolbar">
-      <div class="toolbar-left">
-        <div class="search-box">
-          <input type="text" id="searchInput" placeholder="Search video posts by title..." />
+    <!-- PAGE 2: WATCH / POST DETAIL VIEW -->
+    <section id="viewWatch" class="page-view">
+      <div style="max-width: 920px; margin: 0 auto 14px;">
+        <button id="backFromWatchBtn" class="btn-ghost">← Back to All Posts</button>
+      </div>
+      <div id="watchCard" class="watch-card">Loading post...</div>
+    </section>
+
+    <!-- PAGE 3: STUDIO / ADMIN VIEW -->
+    <section id="viewStudio" class="page-view">
+      <div id="studioLoginCard" class="studio-card studio-login-box">
+        <h2 style="font-size: 19px; margin-bottom: 12px;">Studio Sign In</h2>
+        <form id="studioLoginForm" style="display: grid; gap: 12px;">
+          <input type="text" id="loginUser" placeholder="Username" autocomplete="username" required />
+          <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password" required />
+          <button type="submit" class="btn-red">Sign In</button>
+          <div id="loginError" style="color: #f87171; font-size: 13px; min-height: 18px;"></div>
+        </form>
+      </div>
+
+      <div id="studioDashboard" style="display: none;">
+        <div class="studio-card">
+          <h2 style="font-size: 19px;">Publish New Video Post</h2>
+          <form id="addVideoForm" class="studio-form">
+            <input type="text" id="addTitle" placeholder="Video Title" required />
+            <input type="url" id="addThumb" placeholder="Thumbnail Photo URL (https://...)" />
+            <input type="url" id="addVideo" placeholder="Video URL (.mp4) or Telegram Link" required />
+            <button type="submit" class="btn-red">Publish Post</button>
+          </form>
+          <div id="studioMsg" class="studio-msg"></div>
         </div>
-        <select id="sortSelect" aria-label="Sort posts">
-          <option value="newest">Newest First</option>
-          <option value="oldest">Oldest First</option>
-          <option value="az">Title (A - Z)</option>
-        </select>
-      </div>
 
-      <div class="tabs">
-        <button class="tab-btn active" data-filter="all">All Posts</button>
-        <button class="tab-btn" data-filter="group">Group Sync</button>
-        <button class="tab-btn" data-filter="manual">Studio</button>
+        <div class="studio-card">
+          <h3 style="font-size: 17px; margin-bottom: 10px;">Manage Posts</h3>
+          <div id="manageList"></div>
+        </div>
       </div>
-    </div>
-
-    <!-- Posts Grid -->
-    <div id="videoGrid" class="grid"></div>
+    </section>
   </main>
-
-  <!-- Sign In Modal -->
-  <div id="loginModal" class="modal">
-    <div class="modal-box small">
-      <div class="modal-head">
-        <div class="modal-title">Account Sign In</div>
-        <button id="closeLoginModal" class="btn-ghost">✕</button>
-      </div>
-      <form id="loginForm" class="form-stack">
-        <input type="text" id="loginUser" placeholder="Username" autocomplete="username" required />
-        <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password" required />
-        <button type="submit" id="loginSubmitBtn" class="btn-red">Continue</button>
-        <div id="loginError" class="error-text"></div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Edit Post Modal (Authenticated Only) -->
-  <div id="editModal" class="modal">
-    <div class="modal-box small">
-      <div class="modal-head">
-        <div class="modal-title">Edit Post</div>
-        <button id="closeEditModal" class="btn-ghost">✕</button>
-      </div>
-      <form id="editForm" class="form-stack">
-        <input type="hidden" id="editKey" />
-        <input type="text" id="editTitle" placeholder="Video Title" required />
-        <input type="url" id="editThumb" placeholder="Thumbnail Photo URL (https://...)" />
-        <input type="url" id="editLink" placeholder="Video URL (.mp4) or Telegram Link" />
-        <button type="submit" class="btn-indigo">Save Changes</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Video Player Modal -->
-  <div id="playerModal" class="modal">
-    <div class="modal-box">
-      <div class="modal-head">
-        <div id="playerTitle" class="modal-title">Video</div>
-        <button id="closePlayerModal" class="btn-ghost">✕</button>
-      </div>
-      <div id="playerContent"></div>
-    </div>
-  </div>
 
   <div id="toast" class="toast"></div>
 
@@ -733,38 +572,25 @@
     const AUTH_USER = "chathumal";
     const AUTH_PASS = "aaaa1234";
 
-    // Public Group Notification Bot Config
-    const NOTIFY_BOT_TOKEN = "9010761268:AAFajz753y4OiRWbZ9Je_XAavTLIBMY7CPQ";
-    const PUBLIC_GROUP_ID = "-1003951414350";
-    // Site එක live දාපු ගමන් current URL එක auto ගන්නවා; live නැත්නම් මෙතන fallback URL එකක් දාන්න පුළුවන්
-    const FALLBACK_SITE_URL = "";
-
-    function resolveActiveSiteUrl() {
-      const loc = window.location.href || "";
-      if (loc.startsWith("http://") || loc.startsWith("https://")) {
-        return loc;
-      }
-      return FALLBACK_SITE_URL.trim();
-    }
-
     let allVideos = [];
     let currentFilter = "all";
     let currentSort = "newest";
-    let isAuthenticated = sessionStorage.getItem("ph_session_active") === "true";
-    let firstLoad = true;
-    let failedAttempts = 0;
-    let lockoutUntil = 0;
+    let isAuthenticated = sessionStorage.getItem("ph_studio_session") === "true";
 
-    const studioPanel = document.getElementById("studioPanel");
-    const openLoginBtn = document.getElementById("openLoginBtn");
+    const viewHome = document.getElementById("viewHome");
+    const viewWatch = document.getElementById("viewWatch");
+    const viewStudio = document.getElementById("viewStudio");
+    const navHomeBtn = document.getElementById("navHomeBtn");
+    const navStudioBtn = document.getElementById("navStudioBtn");
     const logoutBtn = document.getElementById("logoutBtn");
-    const loginModal = document.getElementById("loginModal");
-    const editModal = document.getElementById("editModal");
-    const playerModal = document.getElementById("playerModal");
     const videoGrid = document.getElementById("videoGrid");
     const videoCount = document.getElementById("videoCount");
     const searchInput = document.getElementById("searchInput");
     const sortSelect = document.getElementById("sortSelect");
+    const watchCard = document.getElementById("watchCard");
+    const studioLoginCard = document.getElementById("studioLoginCard");
+    const studioDashboard = document.getElementById("studioDashboard");
+    const manageList = document.getElementById("manageList");
     const toastEl = document.getElementById("toast");
 
     function escapeHtml(str = "") {
@@ -780,261 +606,125 @@
       toastEl.textContent = text;
       toastEl.classList.add("show");
       clearTimeout(showToast._timer);
-      showToast._timer = setTimeout(() => toastEl.classList.remove("show"), 2200);
+      showToast._timer = setTimeout(() => toastEl.classList.remove("show"), 2100);
     }
 
-    function formatDuration(sec) {
-      const total = Number(sec || 0);
-      if (!total || total <= 0) return "";
-      const m = Math.floor(total / 60);
-      const s = total % 60;
-      return `${m}:${String(s).padStart(2, "0")}`;
+    function navigateTo(hash) {
+      window.location.hash = hash;
     }
 
-    // Site එකට වැටෙන post එකේ photo එක (thumb_url) සමඟ Public Group එකට කෙළින්ම sendPhoto යවන function එක
-    async function notifyPublicGroupFromSite({ title, thumb_url }) {
-      const msgEl = document.getElementById("studioMsg");
-      if (!NOTIFY_BOT_TOKEN || !PUBLIC_GROUP_ID) {
-        if (msgEl) {
-          msgEl.style.color = "#f87171";
-          msgEl.textContent = "Notify bot token or public group ID missing.";
-        }
+    function getWatchUrl(key) {
+      const base = window.location.href.split("#")[0];
+      return `${base}#watch=${encodeURIComponent(key)}`;
+    }
+
+    function syncStudioUI() {
+      studioLoginCard.style.display = isAuthenticated ? "none" : "block";
+      studioDashboard.style.display = isAuthenticated ? "block" : "none";
+      logoutBtn.style.display = isAuthenticated ? "inline-flex" : "none";
+      if (isAuthenticated) {
+        renderManageList();
+      }
+    }
+
+    function renderWatchView(postId) {
+      const item = allVideos.find((v) => v._key === postId);
+      if (!item) {
+        watchCard.innerHTML = `
+          <p style="color:#94a3b8; margin-bottom:14px;">Post not found or still loading.</p>
+          <button class="btn-red" onclick="window.location.hash='#home'">Go to Home</button>
+        `;
         return;
       }
 
-      if (!thumb_url || !/^https?:\/\//i.test(thumb_url)) {
-        if (msgEl) {
-          msgEl.style.color = "#fbbf24";
-          msgEl.textContent = "Post published! (No post photo to send to group)";
-        }
-        return;
-      }
+      document.title = `${item.title || "Video"} — PhotoHub`;
+      const directUrl = item.video_url || "";
+      const tgLink = item.bot_link || item.group_link || "";
+      const dateStr = item.created_at ? new Date(item.created_at * 1000).toLocaleString() : "";
 
-      const safeTitle = String(title || "New Video");
-      const activeSiteUrl = resolveActiveSiteUrl();
-      const siteLine = activeSiteUrl
-        ? `🌐 <b>Website:</b> ${escapeHtml(activeSiteUrl)}\n`
-        : "";
-      const watchLine = activeSiteUrl
-        ? `━━━━━━━━━━━━━━━━━━━━\n▶️ <a href="${escapeHtml(activeSiteUrl)}">Watch on Website</a>`
-        : "";
+      const mediaHtml = directUrl.match(/\.(mp4|webm|ogg)(\?.*)?$/i)
+        ? `<video src="${escapeHtml(directUrl)}" controls autoplay playsinline></video>`
+        : (item.thumb_url
+            ? `<img class="watch-hero-img" src="${escapeHtml(item.thumb_url)}" alt="${escapeHtml(item.title || "Thumbnail")}" />`
+            : "");
 
-      const caption =
-        `🎬 <b>NEW POST ADDED!</b>\n` +
-        `━━━━━━━━━━━━━━━━━━━━\n` +
-        `📌 <b>Title:</b> ${escapeHtml(safeTitle)}\n` +
-        siteLine +
-        watchLine;
-
-      try {
-        let tgRes = null;
-
-        try {
-          const imgResp = await fetch(thumb_url, { mode: "cors" });
-          if (imgResp.ok) {
-            const imgBlob = await imgResp.blob();
-            const formData = new FormData();
-            formData.append("chat_id", PUBLIC_GROUP_ID);
-            formData.append("photo", imgBlob, "post-photo.jpg");
-            formData.append("caption", caption);
-            formData.append("parse_mode", "HTML");
-
-            const rBlob = await fetch(`https://api.telegram.org/bot${NOTIFY_BOT_TOKEN}/sendPhoto`, {
-              method: "POST",
-              body: formData
-            });
-            tgRes = await rBlob.json();
-          }
-        } catch (_) {
-          // CORS block වුණොත් direct photo URL එකෙන් sendPhoto කරනවා
-        }
-
-        if (!tgRes || !tgRes.ok) {
-          const rPhoto = await fetch(`https://api.telegram.org/bot${NOTIFY_BOT_TOKEN}/sendPhoto`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              chat_id: PUBLIC_GROUP_ID,
-              photo: thumb_url,
-              caption,
-              parse_mode: "HTML"
-            })
-          });
-          tgRes = await rPhoto.json();
-        }
-
-        if (tgRes && tgRes.ok) {
-          if (msgEl) {
-            msgEl.style.color = "#4ade80";
-            msgEl.textContent = "Photo & post sent to public group!";
-          }
-        } else {
-          const desc = (tgRes && tgRes.description) || "Telegram photo send failed";
-          if (msgEl) {
-            msgEl.style.color = "#f87171";
-            msgEl.textContent = `Group photo notify failed: ${desc}`;
-          }
-          console.error("Telegram sendPhoto response:", tgRes);
-        }
-      } catch (err) {
-        if (msgEl) {
-          msgEl.style.color = "#f87171";
-          msgEl.textContent = `Network error: ${err.message}`;
-        }
-        console.error("Public group photo notify error:", err);
-      }
-    }
-
-    function showSkeletons(count = 6) {
-      videoGrid.innerHTML = Array.from({ length: count }).map(() => `
-        <div class="skeleton-card">
-          <div class="skel-thumb shimmer"></div>
-          <div class="skel-body">
-            <div class="skel-line shimmer"></div>
-            <div class="skel-line short shimmer"></div>
-          </div>
+      watchCard.innerHTML = `
+        ${mediaHtml}
+        <h1 class="watch-title">${escapeHtml(item.title || "Untitled Video")}</h1>
+        <div class="watch-meta">${escapeHtml(dateStr)}</div>
+        <div class="watch-actions">
+          ${tgLink ? `<a class="btn-link btn-indigo" href="${escapeHtml(tgLink)}" target="_blank" rel="noopener noreferrer">Open in Telegram</a>` : ""}
+          <button id="copyWatchLinkBtn" class="btn-ghost">Copy Post Link</button>
         </div>
-      `).join("");
+      `;
+
+      document.getElementById("copyWatchLinkBtn").addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(getWatchUrl(item._key));
+          showToast("Post link copied");
+        } catch {
+          showToast("Copy failed");
+        }
+      });
     }
 
-    function syncSessionUI() {
-      studioPanel.classList.toggle("visible", isAuthenticated);
-      openLoginBtn.style.display = isAuthenticated ? "none" : "inline-block";
-      logoutBtn.style.display = isAuthenticated ? "inline-block" : "none";
-      renderVideos();
-    }
+    function handleRoute() {
+      const rawHash = window.location.hash || "#home";
+      viewHome.classList.remove("active");
+      viewWatch.classList.remove("active");
+      viewStudio.classList.remove("active");
+      navHomeBtn.classList.remove("active-nav");
+      navStudioBtn.classList.remove("active-nav");
 
-    openLoginBtn.addEventListener("click", () => {
-      document.getElementById("loginError").textContent = "";
-      loginModal.classList.add("open");
-      setTimeout(() => document.getElementById("loginUser").focus(), 60);
-    });
+      // Stop playing video when leaving watch view
+      const activeVid = watchCard.querySelector("video");
+      if (activeVid) activeVid.pause();
 
-    document.getElementById("closeLoginModal").addEventListener("click", () => {
-      loginModal.classList.remove("open");
-    });
-
-    document.getElementById("loginForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const errEl = document.getElementById("loginError");
-      const now = Date.now();
-
-      if (now < lockoutUntil) {
-        const secs = Math.ceil((lockoutUntil - now) / 1000);
-        errEl.textContent = `Too many attempts. Try again in ${secs}s.`;
-        return;
+      if (rawHash.startsWith("#watch=")) {
+        const id = decodeURIComponent(rawHash.slice("#watch=".length));
+        viewWatch.classList.add("active");
+        renderWatchView(id);
+      } else if (rawHash === "#studio") {
+        document.title = "Studio — PhotoHub";
+        viewStudio.classList.add("active");
+        navStudioBtn.classList.add("active-nav");
+        syncStudioUI();
+      } else {
+        document.title = "PhotoHub — Video Vault";
+        viewHome.classList.add("active");
+        navHomeBtn.classList.add("active-nav");
       }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
 
+    window.addEventListener("hashchange", handleRoute);
+    document.getElementById("brandHomeBtn").addEventListener("click", () => navigateTo("#home"));
+    navHomeBtn.addEventListener("click", () => navigateTo("#home"));
+    navStudioBtn.addEventListener("click", () => navigateTo("#studio"));
+    document.getElementById("backFromWatchBtn").addEventListener("click", () => navigateTo("#home"));
+
+    document.getElementById("studioLoginForm").addEventListener("submit", (e) => {
+      e.preventDefault();
       const u = document.getElementById("loginUser").value.trim();
       const p = document.getElementById("loginPass").value;
-
+      const errEl = document.getElementById("loginError");
       if (u === AUTH_USER && p === AUTH_PASS) {
-        failedAttempts = 0;
-        lockoutUntil = 0;
         isAuthenticated = true;
-        sessionStorage.setItem("ph_session_active", "true");
-        loginModal.classList.remove("open");
-        e.target.reset();
+        sessionStorage.setItem("ph_studio_session", "true");
         errEl.textContent = "";
-        syncSessionUI();
-        showToast("Signed in successfully");
+        e.target.reset();
+        syncStudioUI();
+        showToast("Signed in to Studio");
       } else {
-        failedAttempts += 1;
-        if (failedAttempts >= 5) {
-          lockoutUntil = Date.now() + 30000;
-          failedAttempts = 0;
-          errEl.textContent = "Too many failed attempts. Locked for 30s.";
-        } else {
-          errEl.textContent = "Invalid credentials.";
-        }
+        errEl.textContent = "Invalid credentials.";
       }
     });
 
     logoutBtn.addEventListener("click", () => {
       isAuthenticated = false;
-      sessionStorage.removeItem("ph_session_active");
-      syncSessionUI();
+      sessionStorage.removeItem("ph_studio_session");
+      syncStudioUI();
       showToast("Signed out");
-    });
-
-    document.getElementById("closePlayerModal").addEventListener("click", () => {
-      playerModal.classList.remove("open");
-      document.getElementById("playerContent").innerHTML = "";
-    });
-
-    document.getElementById("closeEditModal").addEventListener("click", () => {
-      editModal.classList.remove("open");
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        loginModal.classList.remove("open");
-        editModal.classList.remove("open");
-        playerModal.classList.remove("open");
-        document.getElementById("playerContent").innerHTML = "";
-      }
-    });
-
-    function openPlayer(item) {
-      document.getElementById("playerTitle").textContent = item.title || "Video";
-      const container = document.getElementById("playerContent");
-      const directUrl = item.video_url || "";
-      const tgUrl = item.bot_link || item.group_link || "";
-
-      if (directUrl.match(/\.(mp4|webm|ogg)(\?.*)?$/i)) {
-        container.innerHTML = `<video src="${escapeHtml(directUrl)}" controls autoplay playsinline></video>`;
-      } else if (tgUrl) {
-        container.innerHTML = `
-          ${item.thumb_url ? `<img src="${escapeHtml(item.thumb_url)}" alt="Thumbnail" style="width:100%;max-height:300px;object-fit:cover;border-radius:10px;margin-bottom:14px;" />` : ""}
-          <p style="color:#cbd5e1;font-size:14px;margin-bottom:14px;">Stored in your Telegram Private Group vault. Open Telegram to play or receive the video:</p>
-          <a class="link-btn btn-indigo" href="${escapeHtml(tgUrl)}" target="_blank" rel="noopener noreferrer">Open in Telegram</a>
-        `;
-      } else {
-        container.innerHTML = `<p style="color:#94a3b8;">No playable video URL available.</p>`;
-      }
-      playerModal.classList.add("open");
-    }
-
-    function openEditModal(item) {
-      if (!isAuthenticated) return;
-      document.getElementById("editKey").value = item._key || "";
-      document.getElementById("editTitle").value = item.title || "";
-      document.getElementById("editThumb").value = item.thumb_url || "";
-      document.getElementById("editLink").value = item.video_url || item.bot_link || item.group_link || "";
-      editModal.classList.add("open");
-    }
-
-    document.getElementById("editForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      if (!isAuthenticated) return;
-
-      const key = document.getElementById("editKey").value;
-      const title = document.getElementById("editTitle").value.trim();
-      const thumb_url = document.getElementById("editThumb").value.trim();
-      const rawLink = document.getElementById("editLink").value.trim();
-
-      const patchData = {
-        title,
-        thumb_url,
-        video_url: rawLink.includes("t.me/") ? "" : rawLink,
-      };
-      if (rawLink.includes("t.me/")) {
-        patchData.bot_link = rawLink;
-      }
-
-      const res = await fetch(`${DB_URL}/videos/${key}.json`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(patchData)
-      });
-
-      if (res.ok) {
-        editModal.classList.remove("open");
-        await fetchVideos();
-        showToast("Post updated");
-      } else {
-        showToast("Update failed");
-      }
     });
 
     document.getElementById("addVideoForm").addEventListener("submit", async (e) => {
@@ -1062,23 +752,53 @@
       });
 
       if (res.ok) {
-        await notifyPublicGroupFromSite(payload);
+        msgEl.style.color = "#4ade80";
+        msgEl.textContent = "Published! bot.py watcher will send photo to public group.";
         e.target.reset();
         await fetchVideos();
         setTimeout(() => { msgEl.textContent = ""; }, 4000);
       } else {
         msgEl.style.color = "#f87171";
-        msgEl.textContent = "Failed to publish post.";
+        msgEl.textContent = "Publish failed.";
       }
     });
 
     async function deleteVideo(fbKey) {
       if (!isAuthenticated || !fbKey) return;
-      const res = await fetch(`${DB_URL}/videos/${fbKey}.json`, { method: "DELETE" });
+      const res = await fetch(`${DB_URL}/videos/${encodeURIComponent(fbKey)}.json`, {
+        method: "DELETE"
+      });
       if (res.ok) {
         await fetchVideos();
-        showToast("Post removed");
+        showToast("Post deleted");
       }
+    }
+
+    function renderManageList() {
+      const sorted = [...allVideos].sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+      manageList.innerHTML = sorted.length
+        ? ""
+        : `<p style="color:#94a3b8;">No posts available.</p>`;
+
+      sorted.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "manage-row";
+        row.innerHTML = `
+          <div>
+            <strong>${escapeHtml(item.title || "Untitled")}</strong>
+            <div style="font-size:12px; color:#94a3b8;">ID: ${escapeHtml(item._key)}</div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn-indigo open-post-btn">Watch</button>
+            <button class="btn-ghost del-post-btn">Delete</button>
+          </div>
+        `;
+        row.querySelector(".open-post-btn").addEventListener("click", () => {
+          navigateTo(`#watch=${encodeURIComponent(item._key)}`);
+        });
+        row.querySelector(".del-post-btn").addEventListener("click", () => deleteVideo(item._key));
+        manageList.appendChild(row);
+      });
     }
 
     document.querySelectorAll(".tab-btn").forEach((btn) => {
@@ -1086,23 +806,23 @@
         document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
         currentFilter = btn.dataset.filter;
-        renderVideos();
+        renderHomeGrid();
       });
     });
 
-    searchInput.addEventListener("input", renderVideos);
+    searchInput.addEventListener("input", renderHomeGrid);
     sortSelect.addEventListener("change", (e) => {
       currentSort = e.target.value;
-      renderVideos();
+      renderHomeGrid();
     });
 
-    function getSortedFilteredList() {
+    function renderHomeGrid() {
       const q = searchInput.value.trim().toLowerCase();
       const list = allVideos.filter((v) => {
         const src = v.source || (v.telegram_file_id ? "group" : "manual");
-        const matchesTab = currentFilter === "all" || src === currentFilter;
-        const matchesSearch = !q || (v.title || "").toLowerCase().includes(q);
-        return matchesTab && matchesSearch;
+        const okTab = currentFilter === "all" || src === currentFilter;
+        const okSearch = !q || (v.title || "").toLowerCase().includes(q);
+        return okTab && okSearch;
       });
 
       if (currentSort === "oldest") {
@@ -1113,46 +833,27 @@
         list.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
       }
 
-      return list;
-    }
-
-    function renderVideos() {
-      const filtered = getSortedFilteredList();
       videoCount.textContent = allVideos.length;
       videoGrid.innerHTML = "";
 
-      if (filtered.length === 0) {
+      if (!list.length) {
         videoGrid.innerHTML = `<div class="empty-state">No video posts found.</div>`;
         return;
       }
 
-      filtered.forEach((item, idx) => {
+      list.forEach((item) => {
         const src = item.source || (item.telegram_file_id ? "group" : "manual");
         const tgLink = item.bot_link || item.group_link || "";
-        const shareUrl = tgLink || item.video_url || resolveActiveSiteUrl() || window.location.href;
-        const durationText = formatDuration(item.duration);
-        const dateText = item.created_at
-          ? new Date(item.created_at * 1000).toLocaleDateString()
-          : "";
-
-        const safeTitle = escapeHtml(item.title || "Untitled Video");
-        const safeThumb = escapeHtml(item.thumb_url || "");
-        const safeTg = escapeHtml(tgLink);
+        const dateText = item.created_at ? new Date(item.created_at * 1000).toLocaleDateString() : "";
 
         const card = document.createElement("article");
         card.className = "post-card";
-        card.style.animationDelay = `${Math.min(idx * 45, 360)}ms`;
-
         card.innerHTML = `
           <div class="thumb-box">
-            ${safeThumb
-              ? `<img src="${safeThumb}" alt="${safeTitle}" loading="lazy" />`
+            ${item.thumb_url
+              ? `<img src="${escapeHtml(item.thumb_url)}" alt="${escapeHtml(item.title || "Video")}" loading="lazy" />`
               : `<div class="no-thumb">No Thumbnail Photo</div>`}
-            <div class="thumb-gradient"></div>
-            ${durationText ? `<div class="duration-badge">${escapeHtml(durationText)}</div>` : ""}
-            <div class="watch-pill"><span>▶ Watch Video</span></div>
           </div>
-
           <div class="post-content">
             <div>
               <div class="post-top">
@@ -1161,60 +862,52 @@
                 </span>
                 <span>${escapeHtml(dateText)}</span>
               </div>
-              <div class="post-title">${safeTitle}</div>
+              <div class="post-title">${escapeHtml(item.title || "Untitled Video")}</div>
             </div>
-
             <div class="post-footer">
-              <button class="btn-red watch-btn">Watch</button>
-              ${safeTg ? `<a class="link-btn btn-indigo" href="${safeTg}" target="_blank" rel="noopener noreferrer">Telegram</a>` : ""}
-              <button class="btn-ghost copy-btn">Share</button>
-              ${isAuthenticated ? `<button class="btn-ghost edit-btn">Edit</button>` : ""}
-              ${isAuthenticated ? `<button class="btn-ghost del-btn">Delete</button>` : ""}
+              <button class="btn-red watch-open-btn">Watch</button>
+              ${tgLink ? `<a class="btn-link btn-indigo" href="${escapeHtml(tgLink)}" target="_blank" rel="noopener noreferrer">Telegram</a>` : ""}
+              <button class="btn-ghost copy-link-btn">Copy Link</button>
             </div>
           </div>
         `;
 
-        card.querySelector(".thumb-box").addEventListener("click", () => openPlayer(item));
-        card.querySelector(".watch-btn").addEventListener("click", () => openPlayer(item));
-        card.querySelector(".copy-btn").addEventListener("click", async () => {
+        const goWatch = () => navigateTo(`#watch=${encodeURIComponent(item._key)}`);
+        card.querySelector(".thumb-box").addEventListener("click", goWatch);
+        card.querySelector(".watch-open-btn").addEventListener("click", goWatch);
+        card.querySelector(".copy-link-btn").addEventListener("click", async () => {
           try {
-            await navigator.clipboard.writeText(shareUrl);
-            showToast("Link copied to clipboard");
+            await navigator.clipboard.writeText(getWatchUrl(item._key));
+            showToast("Post link copied");
           } catch {
             showToast("Copy failed");
           }
         });
-
-        if (isAuthenticated) {
-          card.querySelector(".edit-btn").addEventListener("click", () => openEditModal(item));
-          card.querySelector(".del-btn").addEventListener("click", () => deleteVideo(item._key));
-        }
 
         videoGrid.appendChild(card);
       });
     }
 
     async function fetchVideos() {
-      if (firstLoad) showSkeletons(6);
       try {
         const res = await fetch(`${DB_URL}/videos.json`);
         const data = await res.json();
-        if (!data || typeof data !== "object") {
-          allVideos = [];
-        } else {
-          allVideos = Object.entries(data).map(([key, val]) => ({ _key: key, ...val }));
+        allVideos = data && typeof data === "object"
+          ? Object.entries(data).map(([key, val]) => ({ _key: key, ...val }))
+          : [];
+        renderHomeGrid();
+        if (isAuthenticated) renderManageList();
+        if ((window.location.hash || "").startsWith("#watch=")) {
+          const id = decodeURIComponent(window.location.hash.slice("#watch=".length));
+          renderWatchView(id);
         }
-        firstLoad = false;
-        renderVideos();
       } catch (err) {
         console.error("Fetch error:", err);
-        firstLoad = false;
-        renderVideos();
       }
     }
 
-    syncSessionUI();
     fetchVideos();
+    handleRoute();
     setInterval(fetchVideos, 6000);
   </script>
 </body>
