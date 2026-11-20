@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PhotoHub — Video Vault</title>
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --bg-card: #121212;
+      --bg-elevated: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #ef4444;
+      --accent-hover: #dc2626;
+      --indigo: #4f46e5;
+      --indigo-hover: #4338ca;
+      --border: rgba(255, 255, 255, 0.09);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 12% 8%, rgba(239, 68, 68, 0.15), transparent 36%),
+        radial-gradient(circle at 88% 12%, rgba(79, 70, 229, 0.17), transparent 36%),
+        var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding-bottom: 60px;
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(14px);
+      background: rgba(15, 23, 42, 0.82);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+    }
+
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, var(--accent), var(--indigo));
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 16px;
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.32);
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .brand-title span {
+      color: var(--accent);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      padding: 7px 13px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .stat-pill strong {
+      color: var(--text-main);
+    }
+
+    button {
+      border: none;
+      border-radius: 9px;
+      padding: 9px 14px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      color: #fff;
+      transition: transform 0.18s ease, background 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-red {
+      background: var(--accent);
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.26);
+    }
+
+    .btn-red:hover:not(:disabled) {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-indigo {
+      background: var(--indigo);
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.26);
+    }
+
+    .btn-indigo:hover:not(:disabled) {
+      background: var(--indigo-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+    }
+
+    .btn-ghost:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1180px;
+      margin: 26px auto 0;
+      padding: 0 20px;
+    }
+
+    /* Protected Studio / Control Panel */
+    .studio-panel {
+      display: none;
+      background: linear-gradient(145deg, rgba(18, 18, 18, 0.96), rgba(30, 41, 59, 0.75));
+      border: 1px solid rgba(79, 70, 229, 0.4);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 26px;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+      animation: fadeSlideDown 0.35s ease both;
+    }
+
+    .studio-panel.visible {
+      display: block;
+    }
+
+    .studio-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(79, 70, 229, 0.2);
+      color: #c7d2fe;
+      border: 1px solid rgba(129, 140, 248, 0.35);
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .studio-form {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+    }
+
+    .studio-msg {
+      margin-top: 10px;
+      font-size: 13px;
+      min-height: 18px;
+      color: #4ade80;
+    }
+
+    /* Toolbar */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      animation: fadeSlideDown 0.45s ease both;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      flex: 1;
+      min-width: 240px;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 210px;
+      max-width: 350px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--text-main);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    select {
+      width: auto;
+      min-width: 150px;
+      cursor: pointer;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 9px;
+      font-size: 13px;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.28);
+    }
+
+    /* Post Cards Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+      gap: 22px;
+    }
+
+    .post-card {
+      background: linear-gradient(180deg, #161822 0%, var(--bg-card) 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.36);
+      transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.26s ease, border-color 0.26s ease;
+      animation: cardPop 0.44s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .post-card:hover {
+      transform: translateY(-7px);
+      border-color: rgba(239, 68, 68, 0.5);
+      box-shadow: 0 20px 38px rgba(0, 0, 0, 0.55);
+    }
+
+    .thumb-box {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      width: 100%;
+      background: var(--bg-elevated);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .thumb-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.42s ease, filter 0.3s ease;
+    }
+
+    .post-card:hover .thumb-box img {
+      transform: scale(1.07);
+      filter: brightness(0.82);
+    }
+
+    .thumb-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 35%, rgba(0, 0, 0, 0.78) 100%);
+      pointer-events: none;
+    }
+
+    .duration-badge {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(15, 23, 42, 0.86);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #f8fafc;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      z-index: 2;
+    }
+
+    .watch-pill {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.24s ease, transform 0.24s ease;
+      z-index: 2;
+    }
+
+    .thumb-box:hover .watch-pill {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .watch-pill span {
+      background: rgba(239, 68, 68, 0.95);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 9px 16px;
+      border-radius: 999px;
+      box-shadow: 0 10px 24px rgba(239, 68, 68, 0.5);
+    }
+
+    .no-thumb {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      background: repeating-linear-gradient(
+        -45deg,
+        #182235,
+        #182235 10px,
+        #1e293b 10px,
+        #1e293b 20px
+      );
+    }
+
+    .post-content {
+      padding: 15px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      flex: 1;
+    }
+
+    .post-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .badge-group {
+      background: rgba(79, 70, 229, 0.22);
+      color: #a5b4fc;
+      border: 1px solid rgba(129, 140, 248, 0.28);
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 11px;
+    }
+
+    .badge-manual {
+      background: rgba(239, 68, 68, 0.18);
+      color: #fca5a5;
+      border: 1px solid rgba(248, 113, 113, 0.28);
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 11px;
+    }
+
+    .post-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.45;
+      color: var(--text-main);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      word-break: break-word;
+    }
+
+    .post-footer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .link-btn {
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: transform 0.18s ease, background 0.2s ease;
+    }
+
+    .link-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Skeleton Loader */
+    .skeleton-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .shimmer {
+      background: linear-gradient(90deg, #161e2e 25%, #233049 50%, #161e2e 75%);
+      background-size: 200% 100%;
+      animation: shimmerMove 1.4s infinite linear;
+    }
+
+    .skel-thumb {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+    }
+
+    .skel-body {
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .skel-line {
+      height: 14px;
+      border-radius: 6px;
+    }
+
+    .skel-line.short {
+      width: 55%;
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 56px 20px;
+      background: var(--bg-card);
+      border: 1px dashed rgba(255, 255, 255, 0.16);
+      border-radius: 16px;
+      color: var(--text-muted);
+    }
+
+    /* Modals */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.84);
+      backdrop-filter: blur(6px);
+      z-index: 60;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal.open {
+      display: flex;
+      animation: fadeIn 0.22s ease both;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 740px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+      animation: modalScale 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .modal-box.small {
+      max-width: 400px;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    video {
+      width: 100%;
+      max-height: 440px;
+      border-radius: 10px;
+      background: #000;
+    }
+
+    .form-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .error-text {
+      color: #f87171;
+      font-size: 13px;
+      min-height: 18px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: #1e293b;
+      color: #f8fafc;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+      z-index: 80;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes shimmerMove {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes modalScale {
+      from { opacity: 0; transform: scale(0.94); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes fadeSlideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes cardPop {
+      from { opacity: 0; transform: translateY(16px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-logo">PH</div>
+        <div class="brand-title">Photo<span>Hub</span> Vault</div>
+      </div>
+
+      <div class="nav-actions">
+        <div class="stat-pill">Total Posts: <strong id="videoCount">0</strong></div>
+        <button id="openLoginBtn" class="btn-ghost">Member Sign In</button>
+        <button id="logoutBtn" class="btn-ghost" style="display: none;">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Protected Studio / Control Panel -->
+    <section id="studioPanel" class="studio-panel">
+      <span class="studio-badge">STUDIO ACCESS • chathumal</span>
+      <h2 style="margin-top: 8px; font-size: 18px;">Publish New Video Post</h2>
+      <form id="addVideoForm" class="studio-form">
+        <input type="text" id="addTitle" placeholder="Video Title" required />
+        <input type="url" id="addThumb" placeholder="Thumbnail Photo URL (https://...)" />
+        <input type="url" id="addVideo" placeholder="Video URL (.mp4) or Telegram Link" required />
+        <button type="submit" class="btn-red">Publish Post</button>
+      </form>
+      <div id="studioMsg" class="studio-msg"></div>
+    </section>
+
+    <!-- Search, Sort & Filter -->
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search video posts by title..." />
+        </div>
+        <select id="sortSelect" aria-label="Sort posts">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="az">Title (A - Z)</option>
+        </select>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-filter="all">All Posts</button>
+        <button class="tab-btn" data-filter="group">Group Sync</button>
+        <button class="tab-btn" data-filter="manual">Studio</button>
+      </div>
+    </div>
+
+    <!-- Posts Grid -->
+    <div id="videoGrid" class="grid"></div>
+  </main>
+
+  <!-- Sign In Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-box small">
+      <div class="modal-head">
+        <div class="modal-title">Account Sign In</div>
+        <button id="closeLoginModal" class="btn-ghost">✕</button>
+      </div>
+      <form id="loginForm" class="form-stack">
+        <input type="text" id="loginUser" placeholder="Username" autocomplete="username" required />
+        <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password" required />
+        <button type="submit" id="loginSubmitBtn" class="btn-red">Continue</button>
+        <div id="loginError" class="error-text"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Post Modal (Authenticated Only) -->
+  <div id="editModal" class="modal">
+    <div class="modal-box small">
+      <div class="modal-head">
+        <div class="modal-title">Edit Post</div>
+        <button id="closeEditModal" class="btn-ghost">✕</button>
+      </div>
+      <form id="editForm" class="form-stack">
+        <input type="hidden" id="editKey" />
+        <input type="text" id="editTitle" placeholder="Video Title" required />
+        <input type="url" id="editThumb" placeholder="Thumbnail Photo URL (https://...)" />
+        <input type="url" id="editLink" placeholder="Video URL (.mp4) or Telegram Link" />
+        <button type="submit" class="btn-indigo">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Video Player Modal -->
+  <div id="playerModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <div id="playerTitle" class="modal-title">Video</div>
+        <button id="closePlayerModal" class="btn-ghost">✕</button>
+      </div>
+      <div id="playerContent"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const DB_URL = "https://photohub-1f63f-default-rtdb.firebaseio.com";
+    const AUTH_USER = "chathumal";
+    const AUTH_PASS = "aaaa1234";
+
+    // Public Group Notification Bot Config
+    const NOTIFY_BOT_TOKEN = "9010761268:AAFajz753y4OiRWbZ9Je_XAavTLIBMY7CPQ";
+    const PUBLIC_GROUP_ID = "-1003951414350";
+    // Site එක live දාපු ගමන් current URL එක auto ගන්නවා; live නැත්නම් මෙතන fallback URL එකක් දාන්න පුළුවන්
+    const FALLBACK_SITE_URL = "";
+
+    function resolveActiveSiteUrl() {
+      const loc = window.location.href || "";
+      if (loc.startsWith("http://") || loc.startsWith("https://")) {
+        return loc;
+      }
+      return FALLBACK_SITE_URL.trim();
+    }
+
+    let allVideos = [];
+    let currentFilter = "all";
+    let currentSort = "newest";
+    let isAuthenticated = sessionStorage.getItem("ph_session_active") === "true";
+    let firstLoad = true;
+    let failedAttempts = 0;
+    let lockoutUntil = 0;
+
+    const studioPanel = document.getElementById("studioPanel");
+    const openLoginBtn = document.getElementById("openLoginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const loginModal = document.getElementById("loginModal");
+    const editModal = document.getElementById("editModal");
+    const playerModal = document.getElementById("playerModal");
+    const videoGrid = document.getElementById("videoGrid");
+    const videoCount = document.getElementById("videoCount");
+    const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
+    const toastEl = document.getElementById("toast");
+
+    function escapeHtml(str = "") {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function showToast(text) {
+      toastEl.textContent = text;
+      toastEl.classList.add("show");
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => toastEl.classList.remove("show"), 2200);
+    }
+
+    function formatDuration(sec) {
+      const total = Number(sec || 0);
+      if (!total || total <= 0) return "";
+      const m = Math.floor(total / 60);
+      const s = total % 60;
+      return `${m}:${String(s).padStart(2, "0")}`;
+    }
+
+    // Site එකට වැටෙන post එකේ photo එක (thumb_url) සමඟ Public Group එකට කෙළින්ම sendPhoto යවන function එක
+    async function notifyPublicGroupFromSite({ title, thumb_url }) {
+      const msgEl = document.getElementById("studioMsg");
+      if (!NOTIFY_BOT_TOKEN || !PUBLIC_GROUP_ID) {
+        if (msgEl) {
+          msgEl.style.color = "#f87171";
+          msgEl.textContent = "Notify bot token or public group ID missing.";
+        }
+        return;
+      }
+
+      if (!thumb_url || !/^https?:\/\//i.test(thumb_url)) {
+        if (msgEl) {
+          msgEl.style.color = "#fbbf24";
+          msgEl.textContent = "Post published! (No post photo to send to group)";
+        }
+        return;
+      }
+
+      const safeTitle = String(title || "New Video");
+      const activeSiteUrl = resolveActiveSiteUrl();
+      const siteLine = activeSiteUrl
+        ? `🌐 <b>Website:</b> ${escapeHtml(activeSiteUrl)}\n`
+        : "";
+      const watchLine = activeSiteUrl
+        ? `━━━━━━━━━━━━━━━━━━━━\n▶️ <a href="${escapeHtml(activeSiteUrl)}">Watch on Website</a>`
+        : "";
+
+      const caption =
+        `🎬 <b>NEW POST ADDED!</b>\n` +
+        `━━━━━━━━━━━━━━━━━━━━\n` +
+        `📌 <b>Title:</b> ${escapeHtml(safeTitle)}\n` +
+        siteLine +
+        watchLine;
+
+      try {
+        let tgRes = null;
+
+        try {
+          const imgResp = await fetch(thumb_url, { mode: "cors" });
+          if (imgResp.ok) {
+            const imgBlob = await imgResp.blob();
+            const formData = new FormData();
+            formData.append("chat_id", PUBLIC_GROUP_ID);
+            formData.append("photo", imgBlob, "post-photo.jpg");
+            formData.append("caption", caption);
+            formData.append("parse_mode", "HTML");
+
+            const rBlob = await fetch(`https://api.telegram.org/bot${NOTIFY_BOT_TOKEN}/sendPhoto`, {
+              method: "POST",
+              body: formData
+            });
+            tgRes = await rBlob.json();
+          }
+        } catch (_) {
+          // CORS block වුණොත් direct photo URL එකෙන් sendPhoto කරනවා
+        }
+
+        if (!tgRes || !tgRes.ok) {
+          const rPhoto = await fetch(`https://api.telegram.org/bot${NOTIFY_BOT_TOKEN}/sendPhoto`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: PUBLIC_GROUP_ID,
+              photo: thumb_url,
+              caption,
+              parse_mode: "HTML"
+            })
+          });
+          tgRes = await rPhoto.json();
+        }
+
+        if (tgRes && tgRes.ok) {
+          if (msgEl) {
+            msgEl.style.color = "#4ade80";
+            msgEl.textContent = "Photo & post sent to public group!";
+          }
+        } else {
+          const desc = (tgRes && tgRes.description) || "Telegram photo send failed";
+          if (msgEl) {
+            msgEl.style.color = "#f87171";
+            msgEl.textContent = `Group photo notify failed: ${desc}`;
+          }
+          console.error("Telegram sendPhoto response:", tgRes);
+        }
+      } catch (err) {
+        if (msgEl) {
+          msgEl.style.color = "#f87171";
+          msgEl.textContent = `Network error: ${err.message}`;
+        }
+        console.error("Public group photo notify error:", err);
+      }
+    }
+
+    function showSkeletons(count = 6) {
+      videoGrid.innerHTML = Array.from({ length: count }).map(() => `
+        <div class="skeleton-card">
+          <div class="skel-thumb shimmer"></div>
+          <div class="skel-body">
+            <div class="skel-line shimmer"></div>
+            <div class="skel-line short shimmer"></div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function syncSessionUI() {
+      studioPanel.classList.toggle("visible", isAuthenticated);
+      openLoginBtn.style.display = isAuthenticated ? "none" : "inline-block";
+      logoutBtn.style.display = isAuthenticated ? "inline-block" : "none";
+      renderVideos();
+    }
+
+    openLoginBtn.addEventListener("click", () => {
+      document.getElementById("loginError").textContent = "";
+      loginModal.classList.add("open");
+      setTimeout(() => document.getElementById("loginUser").focus(), 60);
+    });
+
+    document.getElementById("closeLoginModal").addEventListener("click", () => {
+      loginModal.classList.remove("open");
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById("loginError");
+      const now = Date.now();
+
+      if (now < lockoutUntil) {
+        const secs = Math.ceil((lockoutUntil - now) / 1000);
+        errEl.textContent = `Too many attempts. Try again in ${secs}s.`;
+        return;
+      }
+
+      const u = document.getElementById("loginUser").value.trim();
+      const p = document.getElementById("loginPass").value;
+
+      if (u === AUTH_USER && p === AUTH_PASS) {
+        failedAttempts = 0;
+        lockoutUntil = 0;
+        isAuthenticated = true;
+        sessionStorage.setItem("ph_session_active", "true");
+        loginModal.classList.remove("open");
+        e.target.reset();
+        errEl.textContent = "";
+        syncSessionUI();
+        showToast("Signed in successfully");
+      } else {
+        failedAttempts += 1;
+        if (failedAttempts >= 5) {
+          lockoutUntil = Date.now() + 30000;
+          failedAttempts = 0;
+          errEl.textContent = "Too many failed attempts. Locked for 30s.";
+        } else {
+          errEl.textContent = "Invalid credentials.";
+        }
+      }
+    });
+
+    logoutBtn.addEventListener("click", () => {
+      isAuthenticated = false;
+      sessionStorage.removeItem("ph_session_active");
+      syncSessionUI();
+      showToast("Signed out");
+    });
+
+    document.getElementById("closePlayerModal").addEventListener("click", () => {
+      playerModal.classList.remove("open");
+      document.getElementById("playerContent").innerHTML = "";
+    });
+
+    document.getElementById("closeEditModal").addEventListener("click", () => {
+      editModal.classList.remove("open");
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        loginModal.classList.remove("open");
+        editModal.classList.remove("open");
+        playerModal.classList.remove("open");
+        document.getElementById("playerContent").innerHTML = "";
+      }
+    });
+
+    function openPlayer(item) {
+      document.getElementById("playerTitle").textContent = item.title || "Video";
+      const container = document.getElementById("playerContent");
+      const directUrl = item.video_url || "";
+      const tgUrl = item.bot_link || item.group_link || "";
+
+      if (directUrl.match(/\.(mp4|webm|ogg)(\?.*)?$/i)) {
+        container.innerHTML = `<video src="${escapeHtml(directUrl)}" controls autoplay playsinline></video>`;
+      } else if (tgUrl) {
+        container.innerHTML = `
+          ${item.thumb_url ? `<img src="${escapeHtml(item.thumb_url)}" alt="Thumbnail" style="width:100%;max-height:300px;object-fit:cover;border-radius:10px;margin-bottom:14px;" />` : ""}
+          <p style="color:#cbd5e1;font-size:14px;margin-bottom:14px;">Stored in your Telegram Private Group vault. Open Telegram to play or receive the video:</p>
+          <a class="link-btn btn-indigo" href="${escapeHtml(tgUrl)}" target="_blank" rel="noopener noreferrer">Open in Telegram</a>
+        `;
+      } else {
+        container.innerHTML = `<p style="color:#94a3b8;">No playable video URL available.</p>`;
+      }
+      playerModal.classList.add("open");
+    }
+
+    function openEditModal(item) {
+      if (!isAuthenticated) return;
+      document.getElementById("editKey").value = item._key || "";
+      document.getElementById("editTitle").value = item.title || "";
+      document.getElementById("editThumb").value = item.thumb_url || "";
+      document.getElementById("editLink").value = item.video_url || item.bot_link || item.group_link || "";
+      editModal.classList.add("open");
+    }
+
+    document.getElementById("editForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!isAuthenticated) return;
+
+      const key = document.getElementById("editKey").value;
+      const title = document.getElementById("editTitle").value.trim();
+      const thumb_url = document.getElementById("editThumb").value.trim();
+      const rawLink = document.getElementById("editLink").value.trim();
+
+      const patchData = {
+        title,
+        thumb_url,
+        video_url: rawLink.includes("t.me/") ? "" : rawLink,
+      };
+      if (rawLink.includes("t.me/")) {
+        patchData.bot_link = rawLink;
+      }
+
+      const res = await fetch(`${DB_URL}/videos/${key}.json`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(patchData)
+      });
+
+      if (res.ok) {
+        editModal.classList.remove("open");
+        await fetchVideos();
+        showToast("Post updated");
+      } else {
+        showToast("Update failed");
+      }
+    });
+
+    document.getElementById("addVideoForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!isAuthenticated) return;
+
+      const title = document.getElementById("addTitle").value.trim();
+      const thumb_url = document.getElementById("addThumb").value.trim();
+      const rawUrl = document.getElementById("addVideo").value.trim();
+      const msgEl = document.getElementById("studioMsg");
+
+      const payload = {
+        title,
+        thumb_url,
+        video_url: rawUrl.includes("t.me/") ? "" : rawUrl,
+        bot_link: rawUrl.includes("t.me/") ? rawUrl : "",
+        source: "manual",
+        created_at: Math.floor(Date.now() / 1000)
+      };
+
+      const res = await fetch(`${DB_URL}/videos.json`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        await notifyPublicGroupFromSite(payload);
+        e.target.reset();
+        await fetchVideos();
+        setTimeout(() => { msgEl.textContent = ""; }, 4000);
+      } else {
+        msgEl.style.color = "#f87171";
+        msgEl.textContent = "Failed to publish post.";
+      }
+    });
+
+    async function deleteVideo(fbKey) {
+      if (!isAuthenticated || !fbKey) return;
+      const res = await fetch(`${DB_URL}/videos/${fbKey}.json`, { method: "DELETE" });
+      if (res.ok) {
+        await fetchVideos();
+        showToast("Post removed");
+      }
+    }
+
+    document.querySelectorAll(".tab-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentFilter = btn.dataset.filter;
+        renderVideos();
+      });
+    });
+
+    searchInput.addEventListener("input", renderVideos);
+    sortSelect.addEventListener("change", (e) => {
+      currentSort = e.target.value;
+      renderVideos();
+    });
+
+    function getSortedFilteredList() {
+      const q = searchInput.value.trim().toLowerCase();
+      const list = allVideos.filter((v) => {
+        const src = v.source || (v.telegram_file_id ? "group" : "manual");
+        const matchesTab = currentFilter === "all" || src === currentFilter;
+        const matchesSearch = !q || (v.title || "").toLowerCase().includes(q);
+        return matchesTab && matchesSearch;
+      });
+
+      if (currentSort === "oldest") {
+        list.sort((a, b) => (a.created_at || 0) - (b.created_at || 0));
+      } else if (currentSort === "az") {
+        list.sort((a, b) => (a.title || "").localeCompare(b.title || ""));
+      } else {
+        list.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+      }
+
+      return list;
+    }
+
+    function renderVideos() {
+      const filtered = getSortedFilteredList();
+      videoCount.textContent = allVideos.length;
+      videoGrid.innerHTML = "";
+
+      if (filtered.length === 0) {
+        videoGrid.innerHTML = `<div class="empty-state">No video posts found.</div>`;
+        return;
+      }
+
+      filtered.forEach((item, idx) => {
+        const src = item.source || (item.telegram_file_id ? "group" : "manual");
+        const tgLink = item.bot_link || item.group_link || "";
+        const shareUrl = tgLink || item.video_url || resolveActiveSiteUrl() || window.location.href;
+        const durationText = formatDuration(item.duration);
+        const dateText = item.created_at
+          ? new Date(item.created_at * 1000).toLocaleDateString()
+          : "";
+
+        const safeTitle = escapeHtml(item.title || "Untitled Video");
+        const safeThumb = escapeHtml(item.thumb_url || "");
+        const safeTg = escapeHtml(tgLink);
+
+        const card = document.createElement("article");
+        card.className = "post-card";
+        card.style.animationDelay = `${Math.min(idx * 45, 360)}ms`;
+
+        card.innerHTML = `
+          <div class="thumb-box">
+            ${safeThumb
+              ? `<img src="${safeThumb}" alt="${safeTitle}" loading="lazy" />`
+              : `<div class="no-thumb">No Thumbnail Photo</div>`}
+            <div class="thumb-gradient"></div>
+            ${durationText ? `<div class="duration-badge">${escapeHtml(durationText)}</div>` : ""}
+            <div class="watch-pill"><span>▶ Watch Video</span></div>
+          </div>
+
+          <div class="post-content">
+            <div>
+              <div class="post-top">
+                <span class="${src === "group" ? "badge-group" : "badge-manual"}">
+                  ${src === "group" ? "Group Sync" : "Studio"}
+                </span>
+                <span>${escapeHtml(dateText)}</span>
+              </div>
+              <div class="post-title">${safeTitle}</div>
+            </div>
+
+            <div class="post-footer">
+              <button class="btn-red watch-btn">Watch</button>
+              ${safeTg ? `<a class="link-btn btn-indigo" href="${safeTg}" target="_blank" rel="noopener noreferrer">Telegram</a>` : ""}
+              <button class="btn-ghost copy-btn">Share</button>
+              ${isAuthenticated ? `<button class="btn-ghost edit-btn">Edit</button>` : ""}
+              ${isAuthenticated ? `<button class="btn-ghost del-btn">Delete</button>` : ""}
+            </div>
+          </div>
+        `;
+
+        card.querySelector(".thumb-box").addEventListener("click", () => openPlayer(item));
+        card.querySelector(".watch-btn").addEventListener("click", () => openPlayer(item));
+        card.querySelector(".copy-btn").addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(shareUrl);
+            showToast("Link copied to clipboard");
+          } catch {
+            showToast("Copy failed");
+          }
+        });
+
+        if (isAuthenticated) {
+          card.querySelector(".edit-btn").addEventListener("click", () => openEditModal(item));
+          card.querySelector(".del-btn").addEventListener("click", () => deleteVideo(item._key));
+        }
+
+        videoGrid.appendChild(card);
+      });
+    }
+
+    async function fetchVideos() {
+      if (firstLoad) showSkeletons(6);
+      try {
+        const res = await fetch(`${DB_URL}/videos.json`);
+        const data = await res.json();
+        if (!data || typeof data !== "object") {
+          allVideos = [];
+        } else {
+          allVideos = Object.entries(data).map(([key, val]) => ({ _key: key, ...val }));
+        }
+        firstLoad = false;
+        renderVideos();
+      } catch (err) {
+        console.error("Fetch error:", err);
+        firstLoad = false;
+        renderVideos();
+      }
+    }
+
+    syncSessionUI();
+    fetchVideos();
+    setInterval(fetchVideos, 6000);
+  </script>
+</body>
+</html>
