@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PhotoHub — Video Vault</title>
-  <meta name="monetag" content="cb81a9cc3fc988b07aa393f9fa2ca685">
+
   <style>
     :root {
-      --bg-main: #0f172a;
-      --bg-card: #121212;
+      --bg-main: #090d16;
+      --bg-card: #0f172a;
       --bg-elevated: #1e293b;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
@@ -16,25 +16,31 @@
       --accent-hover: #dc2626;
       --indigo: #4f46e5;
       --indigo-hover: #4338ca;
-      --border: rgba(255, 255, 255, 0.09);
+      --blue: #0284c7;
+      --blue-hover: #0369a1;
+      --gold: #facc15;
+      --border: rgba(255, 255, 255, 0.08);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
     }
 
     body {
       background:
-        radial-gradient(circle at 12% 8%, rgba(239, 68, 68, 0.15), transparent 36%),
-        radial-gradient(circle at 88% 12%, rgba(79, 70, 229, 0.17), transparent 36%),
+        radial-gradient(circle at 12% 8%, rgba(239, 68, 68, 0.16), transparent 38%),
+        radial-gradient(circle at 88% 12%, rgba(79, 70, 229, 0.18), transparent 40%),
+        radial-gradient(circle at 50% 85%, rgba(2, 132, 199, 0.09), transparent 45%),
         var(--bg-main);
       color: var(--text-main);
       min-height: 100vh;
-      padding-bottom: 60px;
+      display: flex;
+      flex-direction: column;
       overflow-x: hidden;
+      animation: ambientPulse 10s ease-in-out infinite alternate;
     }
 
     /* Navbar */
@@ -42,14 +48,15 @@
       position: sticky;
       top: 0;
       z-index: 30;
-      backdrop-filter: blur(14px);
-      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(18px);
+      background: rgba(9, 13, 22, 0.86);
       border-bottom: 1px solid var(--border);
-      padding: 14px 20px;
+      padding: 13px 20px;
+      transition: background 0.25s ease;
     }
 
     .nav-inner {
-      max-width: 1180px;
+      max-width: 1200px;
       margin: 0 auto;
       display: flex;
       align-items: center;
@@ -73,14 +80,20 @@
       display: grid;
       place-items: center;
       font-weight: 800;
-      font-size: 16px;
-      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.32);
+      font-size: 15px;
+      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+    }
+
+    .brand:hover .brand-logo {
+      transform: rotate(-5deg) scale(1.06);
+      box-shadow: 0 10px 26px rgba(79, 70, 229, 0.42);
     }
 
     .brand-title {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 0.3px;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
     }
 
     .brand-title span {
@@ -90,27 +103,46 @@
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 9px;
       flex-wrap: wrap;
     }
 
     .stat-pill {
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border);
-      padding: 7px 13px;
+      padding: 7px 12px;
       border-radius: 999px;
       font-size: 12px;
       color: var(--text-muted);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .stat-pill:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.18);
     }
 
     .stat-pill strong {
       color: var(--text-main);
     }
 
+    .stat-pill.highlight-views {
+      background: rgba(2, 132, 199, 0.14);
+      border-color: rgba(56, 189, 248, 0.34);
+      color: #bae6fd;
+    }
+
+    .stat-pill.highlight-unlocks {
+      background: rgba(34, 197, 94, 0.14);
+      border-color: rgba(74, 222, 128, 0.34);
+      color: #bbf7d0;
+    }
+
     button,
     a.btn-link {
+      position: relative;
       border: none;
-      border-radius: 9px;
+      border-radius: 10px;
       padding: 9px 14px;
       font-weight: 600;
       font-size: 13px;
@@ -119,73 +151,362 @@
       text-decoration: none;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
-      transition: transform 0.18s ease, background 0.2s ease, opacity 0.2s ease;
+      overflow: hidden;
+      transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), background 0.2s ease, opacity 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     button:active,
     a.btn-link:active {
-      transform: scale(0.97);
+      transform: scale(0.96);
     }
 
     .btn-red {
-      background: var(--accent);
-      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.26);
+      background: linear-gradient(135deg, #ef4444, #e11d48);
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.28);
     }
 
     .btn-red:hover {
-      background: var(--accent-hover);
-      transform: translateY(-1px);
+      background: linear-gradient(135deg, #f87171, #ef4444);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(239, 68, 68, 0.38);
     }
 
     .btn-indigo {
-      background: var(--indigo);
-      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.26);
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.28);
     }
 
     .btn-indigo:hover {
-      background: var(--indigo-hover);
-      transform: translateY(-1px);
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(79, 70, 229, 0.38);
     }
 
     .btn-ghost {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--border);
       color: var(--text-main);
     }
 
     .btn-ghost:hover {
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-1px);
     }
 
     .nav-btn.active-nav {
-      outline: 2px solid rgba(255, 255, 255, 0.28);
+      border-color: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.14);
     }
 
-    /* Container & Views */
     .container {
-      max-width: 1180px;
-      margin: 26px auto 0;
-      padding: 0 20px;
+      flex: 1;
+      width: 100%;
+      max-width: 1200px;
+      margin: 24px auto 0;
+      padding: 0 20px 44px;
     }
 
     .page-view {
       display: none;
-      animation: fadeView 0.24s ease both;
     }
 
     .page-view.active {
       display: block;
+      animation: fadeSlideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
-    /* Toolbar */
+    /* Animated Front Welcome Popup Modal */
+    .welcome-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 95;
+      background: rgba(2, 6, 15, 0.78);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .welcome-overlay.open {
+      display: flex;
+      animation: fadeOverlay 0.25s ease both;
+    }
+
+    .welcome-popup {
+      position: relative;
+      width: 100%;
+      max-width: 470px;
+      border-radius: 22px;
+      padding: 26px 24px 24px;
+      background:
+        radial-gradient(circle at 85% 12%, rgba(239, 68, 68, 0.22), transparent 45%),
+        radial-gradient(circle at 12% 88%, rgba(79, 70, 229, 0.25), transparent 50%),
+        linear-gradient(165deg, #131c31 0%, #0b101d 100%);
+      border: 1px solid rgba(165, 180, 252, 0.28);
+      box-shadow:
+        0 26px 65px rgba(0, 0, 0, 0.68),
+        0 0 0 1px rgba(239, 68, 68, 0.14),
+        0 0 38px rgba(79, 70, 229, 0.2);
+      animation: popupSpring 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+      text-align: center;
+    }
+
+    .welcome-wave {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 14px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.24), rgba(79, 70, 229, 0.28));
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      animation: floatWave 2.4s ease-in-out infinite;
+    }
+
+    .welcome-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: #a5b4fc;
+      background: rgba(79, 70, 229, 0.2);
+      border: 1px solid rgba(129, 140, 248, 0.3);
+      padding: 4px 11px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .welcome-popup-title {
+      font-size: 21px;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+
+    .welcome-popup-title span {
+      background: linear-gradient(90deg, #f87171, #fb923c, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .welcome-copy-en {
+      font-size: 13.5px;
+      color: #cbd5e1;
+      line-height: 1.58;
+      margin-bottom: 8px;
+    }
+
+    .welcome-copy-si {
+      font-size: 13px;
+      color: #fde68a;
+      line-height: 1.62;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 18px;
+    }
+
+    .welcome-popup-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .welcome-popup-actions .btn-red,
+    .welcome-popup-actions .btn-indigo {
+      padding: 12px 14px;
+      font-size: 13.5px;
+      border-radius: 12px;
+    }
+
+    .welcome-x-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .welcome-x-btn:hover {
+      background: rgba(239, 68, 68, 0.35);
+      color: #fff;
+    }
+
+    /* Post Unlock Step-by-Step Popup Modal */
+    .unlock-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 96;
+      background: rgba(2, 6, 15, 0.82);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .unlock-modal-overlay.open {
+      display: flex;
+      animation: fadeOverlay 0.22s ease both;
+    }
+
+    .unlock-modal-box {
+      position: relative;
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 22px;
+      padding: 24px 20px 22px;
+      background:
+        radial-gradient(circle at 88% 10%, rgba(239, 68, 68, 0.2), transparent 44%),
+        radial-gradient(circle at 10% 90%, rgba(79, 70, 229, 0.24), transparent 48%),
+        linear-gradient(165deg, #131c31 0%, #0a0f1c 100%);
+      border: 1px solid rgba(165, 180, 252, 0.28);
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.72);
+      animation: popupSpring 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .unlock-modal-head {
+      padding-right: 36px;
+      margin-bottom: 12px;
+    }
+
+    .unlock-modal-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #a5b4fc;
+      background: rgba(79, 70, 229, 0.22);
+      border: 1px solid rgba(129, 140, 248, 0.32);
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+    }
+
+    .unlock-modal-title {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.3;
+      color: #f8fafc;
+    }
+
+    .guide-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: #e2e8f0;
+    }
+
+    .guide-box-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #fde68a;
+      margin-bottom: 8px;
+    }
+
+    .guide-list {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .guide-list li {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .guide-num {
+      flex-shrink: 0;
+      background: rgba(239, 68, 68, 0.25);
+      border: 1px solid rgba(248, 113, 113, 0.4);
+      color: #fecaca;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      margin-top: 2px;
+    }
+
+    /* Vault Banner & Sponsors */
+    .vault-banner {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: linear-gradient(125deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.75));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 16px;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+    }
+
+    .vault-banner h1 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      background: linear-gradient(90deg, #f8fafc, #cbd5e1, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .vault-banner p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .banner-stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .ad-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 11px 14px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border);
+    }
+
+    .ad-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* Search & Filter Toolbar */
     .toolbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
     .toolbar-left {
@@ -198,9 +519,38 @@
     }
 
     .search-box {
+      position: relative;
       flex: 1;
       min-width: 210px;
-      max-width: 350px;
+      max-width: 360px;
+    }
+
+    .search-box input {
+      padding-right: 36px;
+    }
+
+    .clear-search-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      font-size: 12px;
+      display: none;
+    }
+
+    .clear-search-btn.visible {
+      display: inline-flex;
+    }
+
+    .clear-search-btn:hover {
+      background: rgba(239, 68, 68, 0.35);
+      color: #fff;
     }
 
     input,
@@ -213,19 +563,19 @@
       color: var(--text-main);
       font-size: 14px;
       outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
     select {
       width: auto;
-      min-width: 150px;
+      min-width: 165px;
       cursor: pointer;
     }
 
     input:focus,
     select:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.16);
     }
 
     .tabs {
@@ -240,56 +590,120 @@
       color: var(--text-muted);
     }
 
-    .tab-btn.active {
-      background: var(--accent);
-      color: #fff;
-      border-color: transparent;
-      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.28);
+    .tab-btn:hover {
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.18);
     }
 
-    /* Cards Grid */
+    .tab-btn.active {
+      background: linear-gradient(135deg, #ef4444, #e11d48);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
-      gap: 22px;
+      gap: 20px;
     }
 
     .post-card {
-      background: linear-gradient(180deg, #161822 0%, var(--bg-card) 100%);
+      position: relative;
+      background: linear-gradient(180deg, #141b2d 0%, #0d121f 100%);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 18px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.36);
-      transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+      animation: cardEnter 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+      transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.24s ease, box-shadow 0.24s ease;
+    }
+
+    .post-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.05) 48%, transparent 76%);
+      transform: translateX(-110%);
+      transition: transform 0.65s ease;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .post-card:hover::before {
+      transform: translateX(110%);
     }
 
     .post-card:hover {
       transform: translateY(-6px);
-      border-color: rgba(239, 68, 68, 0.5);
-      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.52);
+      border-color: rgba(239, 68, 68, 0.45);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.54), 0 0 24px rgba(79, 70, 229, 0.14);
     }
 
+    /* Full Photo Fit + Subtle Hover Action */
     .thumb-box {
       position: relative;
-      aspect-ratio: 16 / 9;
+      height: 220px;
       width: 100%;
-      background: var(--bg-elevated);
+      background: #070b14;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
       cursor: pointer;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .thumb-box img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
-      transition: transform 0.36s ease;
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .post-card:hover .thumb-box img {
-      transform: scale(1.06);
+      transform: scale(1.03);
+    }
+
+    .thumb-hover-cta {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(9, 13, 22, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #f8fafc;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 999px;
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .post-card:hover .thumb-hover-cta {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .trending-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: linear-gradient(135deg, #ef4444, #f97316);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      animation: badgeGlow 2.4s ease-in-out infinite;
+      z-index: 2;
     }
 
     .no-thumb {
@@ -315,6 +729,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 8px;
       font-size: 11px;
       color: var(--text-muted);
       margin-bottom: 8px;
@@ -346,12 +761,105 @@
       overflow: hidden;
     }
 
+    .post-metrics {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    .rate-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+
+    .star-pill {
+      background: rgba(250, 204, 21, 0.12);
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      color: #fef08a;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 700;
+    }
+
     .post-footer {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
       padding-top: 10px;
       border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .post-footer .btn-red {
+      flex: 1;
+      min-width: 135px;
+    }
+
+    /* Pagination / Load More */
+    .load-more-wrap {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .load-more-wrap.show {
+      display: flex;
+    }
+
+    .load-more-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .load-more-btn {
+      min-width: 210px;
+      padding: 12px 20px;
+      font-size: 14px;
+    }
+
+    /* Skeleton Loader */
+    .skeleton-card {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .shimmer {
+      background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+      background-size: 200% 100%;
+      animation: shimmerAnim 1.3s infinite linear;
+    }
+
+    .skel-thumb {
+      height: 220px;
+      width: 100%;
+    }
+
+    .skel-body {
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .skel-line {
+      height: 14px;
+      border-radius: 6px;
+    }
+
+    .skel-line.short {
+      width: 60%;
     }
 
     .empty-state {
@@ -364,59 +872,481 @@
       color: var(--text-muted);
     }
 
-    /* Watch View */
+    /* Watch & Unlockify 5s Ad-Return Gate */
     .watch-card {
-      max-width: 920px;
+      max-width: 560px;
       margin: 0 auto;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+      background: linear-gradient(180deg, #111827 0%, #0b1120 100%);
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 22px;
+      padding: 24px 22px;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
+      animation: fadeSlideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .reopen-popup-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(79, 70, 229, 0.14);
+      border: 1px solid rgba(129, 140, 248, 0.32);
+      margin-bottom: 14px;
+    }
+
+    .warning-banner {
+      background: rgba(127, 29, 29, 0.45);
+      border: 1px solid rgba(248, 113, 113, 0.5);
+      color: #fecaca;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 12.5px;
+      line-height: 1.55;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .warning-banner.show {
+      display: block;
+      animation: shakeWarn 0.35s ease both;
+    }
+
+    .warning-si {
+      display: block;
+      margin-top: 5px;
+      color: #fde68a;
+      font-size: 12px;
+    }
+
+    .watch-hero-wrap {
+      position: relative;
+      margin-bottom: 16px;
+      cursor: zoom-in;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #070b14;
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
 
     .watch-hero-img {
       width: 100%;
-      max-height: 450px;
-      object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 16px;
+      max-height: 460px;
+      background: #070b14;
+      object-fit: contain;
+      display: block;
+      transition: transform 0.3s ease;
     }
 
-    video {
-      width: 100%;
-      max-height: 460px;
-      border-radius: 12px;
-      background: #000;
-      margin-bottom: 16px;
+    .watch-hero-wrap:hover .watch-hero-img {
+      transform: scale(1.015);
+    }
+
+    .zoom-hint-pill {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(9, 13, 22, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #e2e8f0;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .watch-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
     }
 
     .watch-title {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 8px;
+      font-size: 21px;
+      font-weight: 800;
+      line-height: 1.3;
+      word-break: break-word;
     }
 
-    .watch-meta {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 18px;
-    }
-
-    .watch-actions {
+    .metrics-row {
       display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .metric-pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 12px;
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+
+    .step-badge {
+      background: rgba(79, 70, 229, 0.2);
+      border: 1px solid rgba(129, 140, 248, 0.34);
+      color: #c7d2fe;
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* Interactive 1-5 Star Rating Box */
+    .rating-box {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 10px;
       flex-wrap: wrap;
     }
 
+    .rating-label-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .rating-label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    .rating-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .stars-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .star-btn {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #64748b;
+      font-size: 19px;
+      line-height: 1;
+      transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1), color 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+    }
+
+    .star-btn:hover,
+    .star-btn.preview {
+      transform: scale(1.16) rotate(-6deg);
+      color: var(--gold);
+      background: rgba(250, 204, 21, 0.14);
+      border-color: rgba(250, 204, 21, 0.4);
+    }
+
+    .star-btn.active {
+      color: var(--gold);
+      background: rgba(250, 204, 21, 0.16);
+      border-color: rgba(250, 204, 21, 0.42);
+      animation: starPop 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .step-progress-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #0284c7, #22c55e, #4ade80);
+      transition: width 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .unlock-steps {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .step-btn {
+      width: 100%;
+      min-height: 44px;
+      justify-content: center;
+      padding: 11px 12px;
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      border-radius: 11px;
+      font-size: 12.5px;
+      font-weight: 700;
+      line-height: 1.3;
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.28);
+    }
+
+    .step-btn:hover {
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      transform: translateY(-2px);
+    }
+
+    .step-btn.waiting {
+      background: linear-gradient(135deg, #d97706, #b45309);
+      box-shadow: 0 6px 16px rgba(180, 83, 9, 0.3);
+    }
+
+    .step-btn.completed {
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      box-shadow: 0 6px 16px rgba(21, 128, 61, 0.32);
+    }
+
+    .unlock-final-btn {
+      width: 100%;
+      min-height: 48px;
+      justify-content: center;
+      padding: 14px 16px;
+      background: #1e293b;
+      color: #64748b;
+      border-radius: 11px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: not-allowed;
+    }
+
+    .unlock-final-btn.ready {
+      background: linear-gradient(135deg, var(--accent), #f97316);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(239, 68, 68, 0.42);
+      animation: readyPulse 1.9s ease-in-out infinite;
+    }
+
+    .unlock-sub {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 10px;
+      line-height: 1.55;
+    }
+
+    .sub-si {
+      display: block;
+      margin-top: 4px;
+      color: #cbd5e1;
+    }
+
+    /* Post-Unlock Suggested Banner & Related Section */
+    .unlocked-next-banner {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.14), rgba(79, 70, 229, 0.16));
+      border: 1px solid rgba(74, 222, 128, 0.42);
+      animation: fadeSlideUp 0.3s ease both;
+    }
+
+    .unlocked-next-banner.show {
+      display: block;
+    }
+
+    .unlocked-next-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #bbf7d0;
+      margin-bottom: 4px;
+    }
+
+    .unlocked-next-sub {
+      font-size: 12.5px;
+      color: #e2e8f0;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .related-wrap {
+      max-width: 560px;
+      margin: 22px auto 0;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid var(--border);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    .related-wrap.highlighted {
+      border-color: rgba(74, 222, 128, 0.55);
+      box-shadow: 0 0 32px rgba(34, 197, 94, 0.18);
+      animation: highlightPulse 1.2s ease;
+    }
+
+    .related-heading {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #f8fafc;
+    }
+
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .related-card {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .related-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(74, 222, 128, 0.5);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    .related-thumb {
+      height: 140px;
+      background: #070b14;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .related-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .related-body {
+      padding: 11px 13px;
+    }
+
+    .related-title {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Fullscreen Image Lightbox Modal */
+    .lightbox-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(2, 6, 15, 0.92);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .lightbox-modal.open {
+      display: flex;
+      animation: fadeOverlay 0.2s ease both;
+    }
+
+    .lightbox-img {
+      max-width: 94vw;
+      max-height: 88vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
+      background: #070b14;
+      animation: popupSpring 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .lightbox-close-btn {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      border-radius: 999px;
+      background: rgba(30, 41, 59, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #f8fafc;
+      font-size: 18px;
+      z-index: 101;
+    }
+
+    .lightbox-close-btn:hover {
+      background: var(--accent);
+    }
+
     /* Studio View */
     .studio-card {
-      background: var(--bg-card);
+      background: #0f172a;
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 20px;
       margin-bottom: 22px;
       box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    .studio-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .studio-mini-stat {
+      background: #141c31;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+
+    .studio-mini-label {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .studio-mini-val {
+      font-size: 18px;
+      font-weight: 800;
+      color: #f8fafc;
+      word-break: break-word;
     }
 
     .studio-login-box {
@@ -429,13 +1359,56 @@
       grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 12px;
       margin-top: 14px;
+      align-items: center;
+    }
+
+    .studio-thumb-preview {
+      display: none;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 12px;
+      background: #070b14;
+      border: 1px solid var(--border);
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .studio-thumb-preview.show {
+      display: flex;
+    }
+
+    .studio-thumb-preview img {
+      max-height: 120px;
+      max-width: 200px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #0b1120;
     }
 
     .studio-msg {
-      margin-top: 10px;
+      margin-top: 12px;
       font-size: 13px;
       min-height: 18px;
       color: #4ade80;
+    }
+
+    .published-quick-box {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(74, 222, 128, 0.35);
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 12.5px;
+    }
+
+    .published-quick-box.show {
+      display: flex;
     }
 
     .manage-row {
@@ -452,7 +1425,25 @@
       border-bottom: none;
     }
 
-    /* Toast */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      background: rgba(9, 13, 22, 0.92);
+      padding: 18px 20px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .site-footer a {
+      color: #93c5fd;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+
+    .site-footer a:hover {
+      text-decoration: underline;
+    }
+
     .toast {
       position: fixed;
       bottom: 22px;
@@ -465,7 +1456,7 @@
       font-size: 13px;
       font-weight: 600;
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
-      z-index: 80;
+      z-index: 110;
       opacity: 0;
       transform: translateY(10px);
       pointer-events: none;
@@ -477,14 +1468,154 @@
       transform: translateY(0);
     }
 
-    @keyframes fadeView {
-      from { opacity: 0; transform: translateY(8px); }
+    @media (max-width: 600px) {
+      .container {
+        padding: 0 14px 36px;
+        margin-top: 16px;
+      }
+
+      .welcome-popup,
+      .unlock-modal-box {
+        padding: 20px 16px 18px;
+      }
+
+      .welcome-popup-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .unlock-steps {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar-left {
+        width: 100%;
+      }
+
+      .search-box {
+        max-width: none;
+        width: 100%;
+      }
+
+      #sortSelect {
+        flex: 1;
+      }
+
+      .tabs {
+        width: 100%;
+      }
+
+      .tabs .tab-btn {
+        flex: 1;
+      }
+
+      .watch-card {
+        padding: 18px 15px;
+        border-radius: 16px;
+      }
+
+      .watch-title {
+        font-size: 18px;
+      }
+
+      .post-footer button {
+        width: 100%;
+      }
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes cardEnter {
+      from { opacity: 0; transform: translateY(14px) scale(0.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes fadeOverlay {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes popupSpring {
+      0% { opacity: 0; transform: scale(0.84) translateY(18px); }
+      70% { opacity: 1; transform: scale(1.02) translateY(-2px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes floatWave {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(6deg); }
+    }
+
+    @keyframes starPop {
+      0% { transform: scale(0.8); }
+      65% { transform: scale(1.24) rotate(-8deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    @keyframes badgeGlow {
+      0%, 100% { box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35); }
+      50% { box-shadow: 0 4px 18px rgba(249, 115, 22, 0.65); }
+    }
+
+    @keyframes readyPulse {
+      0%, 100% { box-shadow: 0 8px 22px rgba(239, 68, 68, 0.36); }
+      50% { box-shadow: 0 10px 30px rgba(249, 115, 22, 0.62); }
+    }
+
+    @keyframes highlightPulse {
+      0% { transform: scale(0.99); }
+      50% { transform: scale(1.012); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes shakeWarn {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    @keyframes ambientPulse {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(8deg); }
+    }
+
+    @keyframes shimmerAnim {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
   </style>
 </head>
 <body>
-  <!-- Shared Navigation -->
+  <!-- Animated Front Welcome Popup -->
+  <div id="welcomePopupOverlay" class="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcomePopupTitle">
+    <div class="welcome-popup">
+      <button type="button" id="closeWelcomePopupBtn" class="welcome-x-btn" title="Close welcome popup">✕</button>
+      <div class="welcome-wave">👋</div>
+      <div class="welcome-badge">PHOTOHUB VAULT • INSTANT ACCESS</div>
+      <h2 id="welcomePopupTitle" class="welcome-popup-title">Welcome! <span>සාදරයෙන් පිළිගන්නවා!</span></h2>
+      <p class="welcome-copy-en">
+        Explore trending posts, rate your favorites, complete the quick 5s steps to unlock, and join our Telegram group!
+      </p>
+      <div class="welcome-copy-si">
+        Trending posts බලන්න, තරු (★) rate කරන්න, තත්පර 5ක steps සම්පූර්ණ කර unlock කරන්න — අලුත්ම updates සඳහා අපේ <strong>Hodamaewa</strong> Telegram group එකටත් join වෙන්න!
+      </div>
+      <div class="welcome-popup-actions">
+        <button type="button" id="enterVaultBtn" class="btn-red">🔥 Enter Vault</button>
+        <a class="btn-link btn-indigo" href="https://t.me/Hodamaewa" target="_blank" rel="noopener noreferrer">📣 Join Hodamaewa</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Post Unlock Step-by-Step Popup Modal -->
+  <div id="unlockModalOverlay" class="unlock-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="unlockModalTitle">
+    <div id="unlockModalBox" class="unlock-modal-box">
+      <button type="button" id="closeUnlockModalBtn" class="welcome-x-btn" title="Close unlock popup">✕</button>
+      <div id="unlockModalContent"></div>
+    </div>
+  </div>
+
   <nav class="navbar">
     <div class="nav-inner">
       <div class="brand" id="brandHomeBtn">
@@ -493,7 +1624,9 @@
       </div>
 
       <div class="nav-actions">
-        <div class="stat-pill">Total Posts: <strong id="videoCount">0</strong></div>
+        <div class="stat-pill">Posts: <strong id="videoCount">0</strong></div>
+        <div class="stat-pill highlight-views">👁 Views: <strong id="navTotalViews">0</strong></div>
+        <div class="stat-pill highlight-unlocks">🔓 Unlocks: <strong id="navTotalUnlocks">0</strong></div>
         <button id="navHomeBtn" class="btn-ghost nav-btn active-nav">Home</button>
         <button id="navStudioBtn" class="btn-indigo nav-btn">Studio</button>
         <button id="logoutBtn" class="btn-ghost" style="display: none;">Sign Out</button>
@@ -504,34 +1637,65 @@
   <main class="container">
     <!-- PAGE 1: HOME / VAULT VIEW -->
     <section id="viewHome" class="page-view active">
+      <div class="vault-banner">
+        <div>
+          <h1>Video Vault & Instant Delivery</h1>
+          <p>Browse verified posts, rate quality, complete the 5s sponsor steps, and receive files via Telegram.</p>
+        </div>
+        <div class="banner-stats">
+          <div class="stat-pill highlight-views">👁 Total Views: <strong id="totalViewsStat">0</strong></div>
+          <div class="stat-pill highlight-unlocks">🔓 Total Unlocks: <strong id="totalUnlocksStat">0</strong></div>
+        </div>
+      </div>
+
+      <div class="ad-bar">
+        <span class="ad-label">Featured Partners:</span>
+        <a class="btn-link btn-indigo" href="https://uplcm.com/4/12250079" target="_blank" rel="noopener noreferrer">⚡ Sponsor Link 1</a>
+        <a class="btn-link btn-red" href="https://asiafilm.org/4/7d57dfa78084d05338da347b633828fe" target="_blank" rel="noopener noreferrer">🔥 Sponsor Link 2</a>
+      </div>
+
       <div class="toolbar">
         <div class="toolbar-left">
           <div class="search-box">
             <input type="text" id="searchInput" placeholder="Search video posts by title..." />
+            <button type="button" id="clearSearchBtn" class="clear-search-btn" title="Clear search">✕</button>
           </div>
           <select id="sortSelect" aria-label="Sort posts">
             <option value="newest">Newest First</option>
             <option value="oldest">Oldest First</option>
+            <option value="most_views">Most Viewed</option>
+            <option value="most_unlocked">Most Unlocked</option>
+            <option value="top_rated">Top Rated (★)</option>
             <option value="az">Title (A - Z)</option>
           </select>
         </div>
 
         <div class="tabs">
           <button class="tab-btn active" data-filter="all">All Posts</button>
+          <button class="tab-btn" data-filter="trending">🔥 Trending</button>
           <button class="tab-btn" data-filter="group">Group Sync</button>
           <button class="tab-btn" data-filter="manual">Studio</button>
         </div>
       </div>
 
       <div id="videoGrid" class="grid"></div>
+
+      <div id="loadMoreWrap" class="load-more-wrap">
+        <div id="loadMoreMeta" class="load-more-meta"></div>
+        <button type="button" id="loadMoreBtn" class="btn-indigo load-more-btn">Load More Posts</button>
+      </div>
     </section>
 
-    <!-- PAGE 2: WATCH / POST DETAIL VIEW -->
+    <!-- PAGE 2: POST VIEW + UNLOCK POPUP + RATING + SUGGESTED POSTS -->
     <section id="viewWatch" class="page-view">
-      <div style="max-width: 920px; margin: 0 auto 14px;">
-        <button id="backFromWatchBtn" class="btn-ghost">← Back to All Posts</button>
+      <div style="max-width: 560px; margin: 0 auto 14px;">
+        <button id="backFromWatchBtn" class="btn-ghost">← Back to Vault</button>
       </div>
       <div id="watchCard" class="watch-card">Loading post...</div>
+      <div id="relatedSection" class="related-wrap" style="display: none;">
+        <h3 id="relatedHeading" class="related-heading">More Videos Like This</h3>
+        <div id="relatedGrid" class="related-grid"></div>
+      </div>
     </section>
 
     <!-- PAGE 3: STUDIO / ADMIN VIEW -->
@@ -547,15 +1711,47 @@
       </div>
 
       <div id="studioDashboard" style="display: none;">
+        <div class="studio-stats-grid">
+          <div class="studio-mini-stat">
+            <div class="studio-mini-label">Total Posts</div>
+            <div class="studio-mini-val" id="studioTotalPosts">0</div>
+          </div>
+          <div class="studio-mini-stat">
+            <div class="studio-mini-label">👁 Total Views</div>
+            <div class="studio-mini-val" id="studioTotalViews">0</div>
+          </div>
+          <div class="studio-mini-stat">
+            <div class="studio-mini-label">🔓 Total Unlocks</div>
+            <div class="studio-mini-val" id="studioTotalUnlocks">0</div>
+          </div>
+          <div class="studio-mini-stat">
+            <div class="studio-mini-label">🏆 Top Unlocked Post</div>
+            <div class="studio-mini-val" id="studioTopPost" style="font-size: 14px;">-</div>
+          </div>
+        </div>
+
         <div class="studio-card">
           <h2 style="font-size: 19px;">Publish New Video Post</h2>
           <form id="addVideoForm" class="studio-form">
             <input type="text" id="addTitle" placeholder="Video Title" required />
             <input type="url" id="addThumb" placeholder="Thumbnail Photo URL (https://...)" />
-            <input type="url" id="addVideo" placeholder="Video URL (.mp4) or Telegram Link" required />
+            <input type="text" id="addBotPayload" placeholder="Telegram Bot Link or file_unique_id (Optional)" />
             <button type="submit" class="btn-red">Publish Post</button>
           </form>
+
+          <div id="studioThumbPreview" class="studio-thumb-preview">
+            <img id="studioPreviewImg" src="" alt="Thumbnail preview" />
+            <div>
+              <div style="font-size: 12.5px; font-weight: 700; color: #e2e8f0;">Thumbnail Preview</div>
+              <div id="studioPreviewStatus" style="font-size: 12px; color: #94a3b8; margin-top: 3px;">Full photo preview</div>
+            </div>
+          </div>
+
           <div id="studioMsg" class="studio-msg"></div>
+          <div id="publishedQuickBox" class="published-quick-box">
+            <span id="publishedQuickUrl" style="color: #bbf7d0; word-break: break-all;"></span>
+            <button type="button" id="copyPublishedQuickBtn" class="btn-ghost">Copy Post Link</button>
+          </div>
         </div>
 
         <div class="studio-card">
@@ -566,33 +1762,154 @@
     </section>
   </main>
 
+  <!-- Fullscreen Lightbox Modal -->
+  <div id="lightboxModal" class="lightbox-modal" aria-hidden="true">
+    <button type="button" id="lightboxCloseBtn" class="lightbox-close-btn" title="Close preview">✕</button>
+    <img id="lightboxImg" class="lightbox-img" src="" alt="Fullscreen preview" />
+  </div>
+
+  <footer class="site-footer">
+    <div>PhotoHub Vault • Instant Video Unlock</div>
+    <div style="margin-top: 6px;">
+      <a href="#home">Vault</a> •
+      <a href="https://t.me/Hodamaewa" target="_blank" rel="noopener noreferrer">Hodamaewa Group</a> •
+      <a href="#studio">Studio</a>
+    </div>
+  </footer>
+
   <div id="toast" class="toast"></div>
 
   <script>
     const DB_URL = "https://photohub-1f63f-default-rtdb.firebaseio.com";
+    const BOT_USERNAME = "AutoVideosPHOTOHUBBot";
     const AUTH_USER = "chathumal";
     const AUTH_PASS = "aaaa1234";
 
+    const MIN_AD_STAY_SECONDS = 5;
+    const TOTAL_UNLOCK_STEPS = 6;
+    const POSTS_PER_PAGE = 12;
+
+    const DEFAULT_AD_LINKS = [
+      "https://uplcm.com/4/12250079",
+      "https://uplcm.com/4/10303491",
+      "https://uplcm.com/4/12319012",
+      "https://auctionr.org/4/4a71586998cdd454531c2572c4b944b6",
+      "https://asiafilm.org/4/7d57dfa78084d05338da347b633828fe",
+      "https://asiafilm.org/4/e52c3b1d124be748dd09663d33a3e7f3"
+    ];
+
+    function createEmptyStepArray(val) {
+      return Array.from({ length: TOTAL_UNLOCK_STEPS }, () => val);
+    }
+
     let allVideos = [];
+    let hasLoadedOnce = false;
     let currentFilter = "all";
     let currentSort = "newest";
+    let visibleLimit = POSTS_PER_PAGE;
+    let activeWatchId = "";
+    let unlockState = createEmptyStepArray(false);
+    let adLeftAtMs = createEmptyStepArray(0);
+    let stepAwaitingReturn = createEmptyStepArray(false);
+    let earlyReturnData = null;
+    let currentPostUnlockPlan = null;
+    let unlockCountedForPost = false;
+    let postJustUnlocked = false;
+    let scrollToSuggestedOnReturn = false;
+    let unlockPopupDismissedForPost = "";
+    let ratingSubmitting = false;
+    let watchRenderToken = 0;
+    let countdownInterval = null;
+    let lastPublishedWatchUrl = "";
     let isAuthenticated = sessionStorage.getItem("ph_studio_session") === "true";
 
     const viewHome = document.getElementById("viewHome");
     const viewWatch = document.getElementById("viewWatch");
     const viewStudio = document.getElementById("viewStudio");
+    const welcomePopupOverlay = document.getElementById("welcomePopupOverlay");
+    const closeWelcomePopupBtn = document.getElementById("closeWelcomePopupBtn");
+    const enterVaultBtn = document.getElementById("enterVaultBtn");
+    const unlockModalOverlay = document.getElementById("unlockModalOverlay");
+    const closeUnlockModalBtn = document.getElementById("closeUnlockModalBtn");
+    const unlockModalContent = document.getElementById("unlockModalContent");
     const navHomeBtn = document.getElementById("navHomeBtn");
     const navStudioBtn = document.getElementById("navStudioBtn");
     const logoutBtn = document.getElementById("logoutBtn");
     const videoGrid = document.getElementById("videoGrid");
+    const loadMoreWrap = document.getElementById("loadMoreWrap");
+    const loadMoreMeta = document.getElementById("loadMoreMeta");
+    const loadMoreBtn = document.getElementById("loadMoreBtn");
     const videoCount = document.getElementById("videoCount");
+    const navTotalViews = document.getElementById("navTotalViews");
+    const navTotalUnlocks = document.getElementById("navTotalUnlocks");
+    const totalViewsStat = document.getElementById("totalViewsStat");
+    const totalUnlocksStat = document.getElementById("totalUnlocksStat");
+    const studioTotalPosts = document.getElementById("studioTotalPosts");
+    const studioTotalViews = document.getElementById("studioTotalViews");
+    const studioTotalUnlocks = document.getElementById("studioTotalUnlocks");
+    const studioTopPost = document.getElementById("studioTopPost");
     const searchInput = document.getElementById("searchInput");
+    const clearSearchBtn = document.getElementById("clearSearchBtn");
     const sortSelect = document.getElementById("sortSelect");
     const watchCard = document.getElementById("watchCard");
+    const relatedSection = document.getElementById("relatedSection");
+    const relatedHeading = document.getElementById("relatedHeading");
+    const relatedGrid = document.getElementById("relatedGrid");
+    const lightboxModal = document.getElementById("lightboxModal");
+    const lightboxImg = document.getElementById("lightboxImg");
+    const lightboxCloseBtn = document.getElementById("lightboxCloseBtn");
     const studioLoginCard = document.getElementById("studioLoginCard");
     const studioDashboard = document.getElementById("studioDashboard");
+    const addThumbInput = document.getElementById("addThumb");
+    const studioThumbPreview = document.getElementById("studioThumbPreview");
+    const studioPreviewImg = document.getElementById("studioPreviewImg");
+    const studioPreviewStatus = document.getElementById("studioPreviewStatus");
+    const publishedQuickBox = document.getElementById("publishedQuickBox");
+    const publishedQuickUrl = document.getElementById("publishedQuickUrl");
+    const copyPublishedQuickBtn = document.getElementById("copyPublishedQuickBtn");
     const manageList = document.getElementById("manageList");
     const toastEl = document.getElementById("toast");
+
+    function dismissWelcomePopup() {
+      welcomePopupOverlay.classList.remove("open");
+      try { sessionStorage.setItem("ph_welcome_popup_seen", "1"); } catch {}
+    }
+
+    function maybeShowWelcomePopup() {
+      const hash = window.location.hash || "#home";
+      if (hash.startsWith("#watch=") || hash === "#studio") return;
+      try {
+        if (sessionStorage.getItem("ph_welcome_popup_seen") === "1") return;
+      } catch {}
+      setTimeout(() => {
+        if ((window.location.hash || "#home") === "#home") {
+          welcomePopupOverlay.classList.add("open");
+        }
+      }, 220);
+    }
+
+    closeWelcomePopupBtn.addEventListener("click", dismissWelcomePopup);
+    enterVaultBtn.addEventListener("click", dismissWelcomePopup);
+    welcomePopupOverlay.addEventListener("click", (e) => {
+      if (e.target === welcomePopupOverlay) dismissWelcomePopup();
+    });
+
+    function openUnlockPopup() {
+      if (!activeWatchId) return;
+      unlockModalOverlay.classList.add("open");
+    }
+
+    function closeUnlockPopup() {
+      unlockModalOverlay.classList.remove("open");
+      if (activeWatchId) {
+        unlockPopupDismissedForPost = activeWatchId;
+      }
+    }
+
+    closeUnlockModalBtn.addEventListener("click", closeUnlockPopup);
+    unlockModalOverlay.addEventListener("click", (e) => {
+      if (e.target === unlockModalOverlay) closeUnlockPopup();
+    });
 
     function escapeHtml(str = "") {
       return String(str)
@@ -607,8 +1924,34 @@
       toastEl.textContent = text;
       toastEl.classList.add("show");
       clearTimeout(showToast._timer);
-      showToast._timer = setTimeout(() => toastEl.classList.remove("show"), 2100);
+      showToast._timer = setTimeout(() => toastEl.classList.remove("show"), 2600);
     }
+
+    function openLightbox(src, altText = "Fullscreen preview") {
+      if (!src) return;
+      lightboxImg.src = src;
+      lightboxImg.alt = altText;
+      lightboxModal.classList.add("open");
+      lightboxModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeLightbox() {
+      lightboxModal.classList.remove("open");
+      lightboxModal.setAttribute("aria-hidden", "true");
+      lightboxImg.removeAttribute("src");
+    }
+
+    lightboxCloseBtn.addEventListener("click", closeLightbox);
+    lightboxModal.addEventListener("click", (e) => {
+      if (e.target === lightboxModal) closeLightbox();
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        if (lightboxModal.classList.contains("open")) closeLightbox();
+        else if (unlockModalOverlay.classList.contains("open")) closeUnlockPopup();
+        else if (welcomePopupOverlay.classList.contains("open")) dismissWelcomePopup();
+      }
+    });
 
     function navigateTo(hash) {
       window.location.hash = hash;
@@ -619,54 +1962,637 @@
       return `${base}#watch=${encodeURIComponent(key)}`;
     }
 
-    function syncStudioUI() {
-      studioLoginCard.style.display = isAuthenticated ? "none" : "block";
-      studioDashboard.style.display = isAuthenticated ? "block" : "none";
-      logoutBtn.style.display = isAuthenticated ? "inline-flex" : "none";
-      if (isAuthenticated) {
-        renderManageList();
+    function getTelegramBotTarget(item) {
+      if (item.bot_link && /^https?:\/\//i.test(item.bot_link)) {
+        return item.bot_link.trim();
+      }
+      if (item.file_unique_id) {
+        return `https://t.me/${BOT_USERNAME}?start=vid_${encodeURIComponent(item.file_unique_id)}`;
+      }
+      if (item.video_url && /^https?:\/\//i.test(item.video_url)) {
+        return item.video_url.trim();
+      }
+      return `https://t.me/${BOT_USERNAME}`;
+    }
+
+    function isTrendingPost(item) {
+      const score = Number(item.unlocked || 0) * 2 + Number(item.views || 0);
+      return score >= 15;
+    }
+
+    function getUnlockRateText(item) {
+      const views = Number(item.views || 0);
+      const unlocks = Number(item.unlocked || 0);
+      if (views <= 0) return "0% rate";
+      const pct = Math.min(100, Math.round((unlocks / views) * 100));
+      return `${pct}% rate`;
+    }
+
+    function getAverageRating(item) {
+      const sum = Number(item.ratingSum || 0);
+      const count = Number(item.ratingCount || 0);
+      if (count <= 0) return { avg: 0, count: 0, text: "No ratings yet" };
+      const avg = Number((sum / count).toFixed(1));
+      return { avg, count, text: `${avg.toFixed(1)} (${count})` };
+    }
+
+    function getSavedUserRating(postId) {
+      try {
+        const val = Number(localStorage.getItem(`ph_rated_${postId}`) || 0);
+        return val >= 1 && val <= 5 ? val : 0;
+      } catch {
+        return 0;
       }
     }
 
-    function renderWatchView(postId) {
+    function saveUserRating(postId, starVal) {
+      try {
+        localStorage.setItem(`ph_rated_${postId}`, String(starVal));
+      } catch {}
+    }
+
+    async function submitPostRating(postId, starVal) {
+      if (!postId || starVal < 1 || starVal > 5 || ratingSubmitting) return;
+      ratingSubmitting = true;
+
+      try {
+        const item = allVideos.find((v) => v._key === postId);
+        const prevUserStar = getSavedUserRating(postId);
+        let nextSum = Number(item?.ratingSum || 0);
+        let nextCount = Number(item?.ratingCount || 0);
+
+        if (prevUserStar >= 1 && prevUserStar <= 5 && nextCount > 0) {
+          nextSum = Math.max(0, nextSum - prevUserStar + starVal);
+        } else {
+          nextSum += starVal;
+          nextCount += 1;
+        }
+
+        const res = await fetch(`${DB_URL}/videos/${encodeURIComponent(postId)}.json`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ratingSum: nextSum, ratingCount: nextCount })
+        });
+
+        if (res.ok) {
+          saveUserRating(postId, starVal);
+          if (item) {
+            item.ratingSum = nextSum;
+            item.ratingCount = nextCount;
+          }
+          renderRatingWidget(postId);
+          renderHomeGrid();
+          showToast(`Rated ${starVal} ★! • තරු ${starVal}ක් ලබා දුන්නා`);
+        } else {
+          showToast("Rating failed");
+        }
+      } catch (e) {
+        console.error("Rating error:", e);
+        showToast("Rating error");
+      } finally {
+        ratingSubmitting = false;
+      }
+    }
+
+    function paintStars(activeCount, isPreview = false) {
+      for (let i = 1; i <= 5; i++) {
+        const btn = document.getElementById(`rateStar${i}`);
+        if (!btn) continue;
+        btn.classList.remove("active", "preview");
+        if (i <= activeCount) {
+          btn.classList.add(isPreview ? "preview" : "active");
+        }
+      }
+    }
+
+    function renderRatingWidget(postId) {
+      const item = allVideos.find((v) => v._key === postId);
+      if (!item) return;
+      const ratingInfo = getAverageRating(item);
+      const userStar = getSavedUserRating(postId);
+
+      const pillVal = document.getElementById("ratingMetricVal");
+      const statusText = document.getElementById("ratingStatusText");
+      if (pillVal) {
+        pillVal.textContent = ratingInfo.count > 0
+          ? `${ratingInfo.avg.toFixed(1)} (${ratingInfo.count})`
+          : "New";
+      }
+      if (statusText) {
+        statusText.textContent = userStar > 0
+          ? `Your rating: ${userStar} ★ • Average: ${ratingInfo.text}`
+          : `Tap a star to rate • Average: ${ratingInfo.text}`;
+      }
+      paintStars(userStar, false);
+    }
+
+    function updateGlobalStats() {
+      const viewsSum = allVideos.reduce((acc, v) => acc + Number(v.views || 0), 0);
+      const unlocksSum = allVideos.reduce((acc, v) => acc + Number(v.unlocked || 0), 0);
+      videoCount.textContent = allVideos.length;
+      if (navTotalViews) navTotalViews.textContent = viewsSum;
+      if (navTotalUnlocks) navTotalUnlocks.textContent = unlocksSum;
+      if (totalViewsStat) totalViewsStat.textContent = viewsSum;
+      if (totalUnlocksStat) totalUnlocksStat.textContent = unlocksSum;
+
+      if (studioTotalPosts) studioTotalPosts.textContent = allVideos.length;
+      if (studioTotalViews) studioTotalViews.textContent = viewsSum;
+      if (studioTotalUnlocks) studioTotalUnlocks.textContent = unlocksSum;
+
+      if (studioTopPost) {
+        if (!allVideos.length) {
+          studioTopPost.textContent = "-";
+        } else {
+          const top = [...allVideos].sort((a, b) => Number(b.unlocked || 0) - Number(a.unlocked || 0))[0];
+          studioTopPost.textContent = `${top.title || "Untitled"} (${Number(top.unlocked || 0)})`;
+        }
+      }
+    }
+
+    function renderSkeletonGrid() {
+      loadMoreWrap.classList.remove("show");
+      videoGrid.innerHTML = Array.from({ length: 6 })
+        .map(() => `
+          <div class="skeleton-card">
+            <div class="skel-thumb shimmer"></div>
+            <div class="skel-body">
+              <div class="skel-line shimmer"></div>
+              <div class="skel-line short shimmer"></div>
+            </div>
+          </div>
+        `)
+        .join("");
+    }
+
+    function getDefaultStepLabels() {
+      return Array.from({ length: TOTAL_UNLOCK_STEPS }, (_, i) => `Unlock ${i + 1}`);
+    }
+
+    function buildUnlockPlan(item) {
+      return {
+        labels: getDefaultStepLabels(),
+        links: [...DEFAULT_AD_LINKS],
+        title: item.title || "this video"
+      };
+    }
+
+    async function incrementFirebaseMetric(postId, field) {
+      try {
+        const item = allVideos.find((v) => v._key === postId);
+        const currentVal = Number(item?.[field] || 0);
+        const nextVal = currentVal + 1;
+        await fetch(`${DB_URL}/videos/${encodeURIComponent(postId)}/${field}.json`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(nextVal)
+        });
+        if (item) item[field] = nextVal;
+        updateGlobalStats();
+      } catch (e) {
+        console.error("Metric update warning:", e);
+      }
+    }
+
+    function renderWarningBanner() {
+      const banner = document.getElementById("earlyReturnBanner");
+      if (!banner) return;
+      if (earlyReturnData) {
+        const s = earlyReturnData.elapsedSec;
+        banner.innerHTML = `
+          <div>⚠️ ඔබ ඉක්මනින් නැවත පැමිණ ඇත (තත්පර ${s}ක් පමණි). විවෘත වන පිටුවේ අවම වශයෙන් <strong>තත්පර ${MIN_AD_STAY_SECONDS}ක්</strong> රැඳී සිට නැවත එන්න! කරුණාකර button එක නැවත click කරන්න.</div>
+        `;
+        banner.classList.add("show");
+      } else {
+        banner.innerHTML = "";
+        banner.classList.remove("show");
+      }
+    }
+
+    function updateProgressUI() {
+      const doneCount = unlockState.filter(Boolean).length;
+      const pct = Math.round((doneCount / TOTAL_UNLOCK_STEPS) * 100);
+      const countLabel = document.getElementById("stepProgressText");
+      const barEl = document.getElementById("stepProgressBar");
+      const inlineCount = document.getElementById("inlineStepStatus");
+      if (countLabel) countLabel.textContent = `ප්‍රගතිය: ${doneCount} / ${TOTAL_UNLOCK_STEPS} පියවර`;
+      if (barEl) barEl.style.width = `${pct}%`;
+      if (inlineCount) inlineCount.textContent = `${doneCount} / ${TOTAL_UNLOCK_STEPS} Steps Done`;
+    }
+
+    function getRemainingSeconds(idx) {
+      if (!stepAwaitingReturn[idx] || !adLeftAtMs[idx]) return MIN_AD_STAY_SECONDS;
+      const elapsed = Math.floor((Date.now() - adLeftAtMs[idx]) / 1000);
+      return Math.max(0, MIN_AD_STAY_SECONDS - elapsed);
+    }
+
+    function showUnlockedSuggestionsState() {
+      postJustUnlocked = true;
+      const banner = document.getElementById("unlockedNextBanner");
+      if (banner) banner.classList.add("show");
+      renderRelatedPosts(activeWatchId, true);
+    }
+
+    function updateUnlockButtonsUI(botTargetUrl) {
+      renderWarningBanner();
+      updateProgressUI();
+
+      const finalBtn = document.getElementById("finalUnlockBtn");
+      const statusSub = document.getElementById("unlockStatusSub");
+      const labels = currentPostUnlockPlan?.labels || getDefaultStepLabels();
+
+      for (let idx = 0; idx < TOTAL_UNLOCK_STEPS; idx++) {
+        const b = document.getElementById(`stepBtn${idx}`);
+        if (!b) return;
+        b.classList.remove("waiting", "completed");
+
+        if (unlockState[idx]) {
+          b.classList.add("completed");
+          b.textContent = `✓ ${labels[idx]}`;
+        } else if (stepAwaitingReturn[idx]) {
+          const rem = getRemainingSeconds(idx);
+          b.classList.add("waiting");
+          b.textContent = rem > 0
+            ? `⏳ තත්පර ${rem}ක් රැඳී සිටින්න`
+            : `✅ සූදානම්! දැන් නැවත එන්න`;
+        } else {
+          b.textContent = `▷ ${labels[idx]}`;
+        }
+      }
+
+      const allComplete = unlockState.every(Boolean);
+      if (finalBtn) {
+        if (allComplete) {
+          finalBtn.disabled = false;
+          finalBtn.classList.add("ready");
+          finalBtn.textContent = "🔓 Unlock file";
+          if (statusSub) {
+            statusSub.innerHTML = `
+              <div>පියවර ${TOTAL_UNLOCK_STEPS}ම සම්පූර්ණයි! දැන් <strong>Unlock file</strong> click කර Telegram bot හරහා වීඩියෝව ලබා ගන්න.</div>
+            `;
+          }
+        } else {
+          finalBtn.disabled = true;
+          finalBtn.classList.remove("ready");
+          finalBtn.textContent = "🔒 Unlock file";
+          if (statusSub) {
+            statusSub.innerHTML = `
+              <div>සෑම පියවරක්ම අලුත් tab එකක විවෘත වේ. අවම වශයෙන් <strong>තත්පර ${MIN_AD_STAY_SECONDS}ක්</strong> එහි රැඳී සිට නැවත මෙම පිටුවට එන්න.</div>
+            `;
+          }
+        }
+      }
+
+      if (finalBtn && allComplete && !finalBtn.dataset.bound) {
+        finalBtn.dataset.bound = "true";
+        finalBtn.addEventListener("click", () => {
+          if (!unlockState.every(Boolean)) return;
+          if (!unlockCountedForPost) {
+            unlockCountedForPost = true;
+            incrementFirebaseMetric(activeWatchId, "unlocked");
+            const el = document.getElementById("unlockedMetricVal");
+            if (el) el.textContent = String(Number(el.textContent || 0) + 1);
+          }
+          scrollToSuggestedOnReturn = true;
+          showUnlockedSuggestionsState();
+          closeUnlockPopup();
+          window.open(botTargetUrl, "_blank", "noopener,noreferrer");
+        });
+      }
+    }
+
+    function startCountdownLoop(botTargetUrl) {
+      if (countdownInterval) clearInterval(countdownInterval);
+      countdownInterval = setInterval(() => {
+        if (!activeWatchId || !stepAwaitingReturn.some(Boolean)) return;
+        updateUnlockButtonsUI(botTargetUrl);
+      }, 500);
+    }
+
+    function handleUserReturnFromAd() {
+      const item = allVideos.find((v) => v._key === activeWatchId);
+      if (!item) return;
+      const botTargetUrl = getTelegramBotTarget(item);
+      const now = Date.now();
+      let changed = false;
+
+      for (let idx = 0; idx < TOTAL_UNLOCK_STEPS; idx++) {
+        if (!stepAwaitingReturn[idx] || unlockState[idx]) continue;
+        stepAwaitingReturn[idx] = false;
+        changed = true;
+
+        const elapsedSec = Math.max(0, Math.floor((now - (adLeftAtMs[idx] || now)) / 1000));
+        if (elapsedSec >= MIN_AD_STAY_SECONDS) {
+          unlockState[idx] = true;
+          earlyReturnData = null;
+          showToast(`පියවර ${idx + 1} සම්පූර්ණයි (${elapsedSec}s)`);
+        } else {
+          earlyReturnData = { elapsedSec };
+        }
+      }
+
+      if (changed) {
+        updateUnlockButtonsUI(botTargetUrl);
+      }
+
+      if (scrollToSuggestedOnReturn && activeWatchId) {
+        scrollToSuggestedOnReturn = false;
+        showUnlockedSuggestionsState();
+        setTimeout(() => {
+          const sec = document.getElementById("relatedSection");
+          if (sec && sec.style.display !== "none") {
+            sec.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          }
+        }, 180);
+      }
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        const now = Date.now();
+        for (let idx = 0; idx < TOTAL_UNLOCK_STEPS; idx++) {
+          if (stepAwaitingReturn[idx] && !unlockState[idx]) {
+            adLeftAtMs[idx] = now;
+          }
+        }
+      } else {
+        handleUserReturnFromAd();
+      }
+    });
+
+    window.addEventListener("focus", () => {
+      handleUserReturnFromAd();
+    });
+
+    function getSuggestedPostsFor(currentItem) {
+      const candidates = allVideos.filter((v) => v._key !== currentItem._key);
+      const words = (currentItem.title || "")
+        .toLowerCase()
+        .split(/[^a-z0-9\u0D80-\u0DFF]+/i)
+        .filter((w) => w.length >= 3);
+
+      return candidates
+        .map((v) => {
+          const vTitle = (v.title || "").toLowerCase();
+          let matchScore = 0;
+          words.forEach((w) => {
+            if (vTitle.includes(w)) matchScore += 10;
+          });
+          const popScore = Number(v.unlocked || 0) * 2 + Number(v.views || 0);
+          return { item: v, score: matchScore + Math.min(popScore, 20) };
+        })
+        .sort((a, b) => {
+          if (b.score !== a.score) return b.score - a.score;
+          return (b.item.created_at || 0) - (a.item.created_at || 0);
+        })
+        .slice(0, 4)
+        .map((entry) => entry.item);
+    }
+
+    function renderRelatedPosts(currentPostId, highlightUnlocked = false) {
+      const currentItem = allVideos.find((v) => v._key === currentPostId);
+      if (!currentItem) {
+        relatedSection.style.display = "none";
+        return;
+      }
+
+      const suggestions = getSuggestedPostsFor(currentItem);
+      if (!suggestions.length) {
+        relatedSection.style.display = "none";
+        return;
+      }
+
+      relatedSection.style.display = "block";
+      if (postJustUnlocked || highlightUnlocked) {
+        relatedHeading.textContent = "✨ Unlocked! Suggested Next Posts For You";
+        relatedSection.classList.remove("highlighted");
+        void relatedSection.offsetWidth;
+        relatedSection.classList.add("highlighted");
+      } else {
+        relatedHeading.textContent = "More Videos Like This";
+        relatedSection.classList.remove("highlighted");
+      }
+
+      relatedGrid.innerHTML = "";
+
+      suggestions.forEach((rel) => {
+        const card = document.createElement("div");
+        card.className = "related-card";
+        card.innerHTML = `
+          <div class="related-thumb">
+            ${rel.thumb_url
+              ? `<img src="${escapeHtml(rel.thumb_url)}" alt="${escapeHtml(rel.title || "Video")}" loading="lazy" />`
+              : `<div class="no-thumb">No Thumbnail</div>`}
+          </div>
+          <div class="related-body">
+            <div class="related-title">${escapeHtml(rel.title || "Untitled Video")}</div>
+          </div>
+        `;
+        card.addEventListener("click", () => navigateTo(`#watch=${encodeURIComponent(rel._key)}`));
+        relatedGrid.appendChild(card);
+      });
+    }
+
+    function mountUnlockPopup(item, botTargetUrl) {
+      const stepButtonsHtml = Array.from({ length: TOTAL_UNLOCK_STEPS }, (_, idx) =>
+        `<button id="stepBtn${idx}" class="step-btn">▷ ${escapeHtml(currentPostUnlockPlan.labels[idx])}</button>`
+      ).join("");
+
+      unlockModalContent.innerHTML = `
+        <div class="unlock-modal-head">
+          <div class="unlock-modal-tag">පියවරෙන් පියවර UNLOCK කරන ආකාරය</div>
+          <h2 id="unlockModalTitle" class="unlock-modal-title">${escapeHtml(item.title || "Unlock Video")}</h2>
+        </div>
+
+        <div class="guide-box">
+          <div class="guide-box-title">📋 කළ යුතු පියවර:</div>
+          <ul class="guide-list">
+            <li><span class="guide-num">Step 1</span><span><strong>Unlock 1</strong> button එක click කරන්න. අලුත් tab එකක විවෘත වන පිටුවේ අවම වශයෙන් <strong>තත්පර 5ක්</strong> රැඳී සිට නැවත මෙම පිටුවට එන්න.</span></li>
+            <li><span class="guide-num">Step 2</span><span>ඒ ආකාරයටම <strong>Unlock 2</strong> සිට <strong>Unlock 6</strong> දක්වා සියලුම පියවර පිළිවෙළින් සම්පූර්ණ කරන්න.</span></li>
+            <li><span class="guide-num">Step 3</span><span>පියවර 6ම <strong>✓</strong> ලකුණු වූ පසු පහළ ඇති <strong>🔓 Unlock file</strong> button එක click කර Telegram bot හරහා වීඩියෝව ලබා ගන්න!</span></li>
+          </ul>
+        </div>
+
+        <div id="earlyReturnBanner" class="warning-banner"></div>
+
+        <div class="step-progress-header">
+          <span id="stepProgressText">ප්‍රගතිය: 0 / ${TOTAL_UNLOCK_STEPS} පියවර</span>
+          <span>අවම තත්පර ${MIN_AD_STAY_SECONDS} / පියවර</span>
+        </div>
+        <div class="progress-track">
+          <div id="stepProgressBar" class="progress-bar"></div>
+        </div>
+
+        <div class="unlock-steps">
+          ${stepButtonsHtml}
+        </div>
+
+        <button id="finalUnlockBtn" class="unlock-final-btn" disabled>🔒 Unlock file</button>
+        <div id="unlockStatusSub" class="unlock-sub"></div>
+      `;
+
+      for (let idx = 0; idx < TOTAL_UNLOCK_STEPS; idx++) {
+        const btn = document.getElementById(`stepBtn${idx}`);
+        btn.addEventListener("click", () => {
+          if (unlockState[idx]) return;
+          const adUrl = currentPostUnlockPlan.links[idx] || DEFAULT_AD_LINKS[idx];
+          earlyReturnData = null;
+          adLeftAtMs[idx] = Date.now();
+          stepAwaitingReturn[idx] = true;
+          updateUnlockButtonsUI(botTargetUrl);
+          startCountdownLoop(botTargetUrl);
+          window.open(adUrl, "_blank", "noopener,noreferrer");
+        });
+      }
+
+      updateUnlockButtonsUI(botTargetUrl);
+    }
+
+    async function renderWatchView(postId, isNewVisit = false) {
+      const myToken = ++watchRenderToken;
       const item = allVideos.find((v) => v._key === postId);
       if (!item) {
+        relatedSection.style.display = "none";
+        unlockModalOverlay.classList.remove("open");
         watchCard.innerHTML = `
-          <p style="color:#94a3b8; margin-bottom:14px;">Post not found or still loading.</p>
-          <button class="btn-red" onclick="window.location.hash='#home'">Go to Home</button>
+          <p style="color:#94a3b8; margin-bottom:14px;">Post not found or still loading...</p>
+          <button class="btn-red" onclick="window.location.hash='#home'">Go to Vault</button>
         `;
         return;
       }
 
-      document.title = `${item.title || "Video"} — PhotoHub`;
-      const directUrl = item.video_url || "";
-      const tgLink = item.bot_link || item.group_link || "";
-      const dateStr = item.created_at ? new Date(item.created_at * 1000).toLocaleString() : "";
+      if (isNewVisit) {
+        unlockState = createEmptyStepArray(false);
+        adLeftAtMs = createEmptyStepArray(0);
+        stepAwaitingReturn = createEmptyStepArray(false);
+        earlyReturnData = null;
+        unlockCountedForPost = false;
+        postJustUnlocked = false;
+        scrollToSuggestedOnReturn = false;
+        unlockPopupDismissedForPost = "";
+        currentPostUnlockPlan = buildUnlockPlan(item);
+        incrementFirebaseMetric(postId, "views");
+      } else if (!currentPostUnlockPlan) {
+        currentPostUnlockPlan = buildUnlockPlan(item);
+      }
 
-      const mediaHtml = directUrl.match(/\.(mp4|webm|ogg)(\?.*)?$/i)
-        ? `<video src="${escapeHtml(directUrl)}" controls autoplay playsinline></video>`
-        : (item.thumb_url
-            ? `<img class="watch-hero-img" src="${escapeHtml(item.thumb_url)}" alt="${escapeHtml(item.title || "Thumbnail")}" />`
-            : "");
+      if (myToken !== watchRenderToken || activeWatchId !== postId) {
+        return;
+      }
+
+      document.title = `${item.title || "Unlock Video"} — PhotoHub`;
+      const unlockedCount = Number(item.unlocked || 0);
+      const viewsCount = Number(item.views || 0);
+      const ratingInfo = getAverageRating(item);
+      const userStar = getSavedUserRating(postId);
+      const botTargetUrl = getTelegramBotTarget(item);
+
+      const starButtonsHtml = Array.from({ length: 5 }, (_, i) => {
+        const s = i + 1;
+        return `<button type="button" id="rateStar${s}" class="star-btn ${s <= userStar ? "active" : ""}" data-star="${s}" title="Rate ${s} star${s > 1 ? "s" : ""}">★</button>`;
+      }).join("");
 
       watchCard.innerHTML = `
-        ${mediaHtml}
-        <h1 class="watch-title">${escapeHtml(item.title || "Untitled Video")}</h1>
-        <div class="watch-meta">${escapeHtml(dateStr)}</div>
-        <div class="watch-actions">
-          ${tgLink ? `<a class="btn-link btn-indigo" href="${escapeHtml(tgLink)}" target="_blank" rel="noopener noreferrer">Open in Telegram</a>` : ""}
-          <button id="copyWatchLinkBtn" class="btn-ghost">Copy Post Link</button>
+        ${item.thumb_url
+          ? `<div id="watchHeroWrap" class="watch-hero-wrap" title="Click to view full image">
+               <img class="watch-hero-img" src="${escapeHtml(item.thumb_url)}" alt="${escapeHtml(item.title || "Thumbnail")}" />
+               <span class="zoom-hint-pill">🔍 Fullscreen</span>
+             </div>`
+          : ""}
+        <div class="watch-header">
+          <h1 class="watch-title">${escapeHtml(item.title || "Untitled Video")}</h1>
+          <button id="sharePostBtn" class="btn-ghost" title="Copy Share Link">⤴ Share</button>
+        </div>
+
+        <div class="metrics-row">
+          <span class="step-badge">⚡ ${TOTAL_UNLOCK_STEPS}-Step Unlock</span>
+          <span class="metric-pill">⭐ <strong id="ratingMetricVal">${ratingInfo.count > 0 ? `${ratingInfo.avg.toFixed(1)} (${ratingInfo.count})` : "New"}</strong></span>
+          <span class="metric-pill">🔒 <strong id="unlockedMetricVal">${unlockedCount}</strong> unlocked</span>
+          <span class="metric-pill">👁 <strong id="viewsMetricVal">${viewsCount}</strong> views</span>
+        </div>
+
+        <div class="reopen-popup-bar">
+          <span id="inlineStepStatus" style="font-size: 12.5px; font-weight: 700; color: #c7d2fe;">0 / ${TOTAL_UNLOCK_STEPS} Steps Done</span>
+          <button type="button" id="reopenUnlockPopupBtn" class="btn-red">🔓 Unlock Video</button>
+        </div>
+
+        <div class="rating-box">
+          <div class="rating-label-wrap">
+            <div class="rating-label">Rate this post • Post එකට rate කරන්න</div>
+            <div id="ratingStatusText" class="rating-sub">${userStar > 0 ? `Your rating: ${userStar} ★ • Average: ${ratingInfo.text}` : `Tap a star to rate • Average: ${ratingInfo.text}`}</div>
+          </div>
+          <div id="starsGroup" class="stars-group">${starButtonsHtml}</div>
+        </div>
+
+        <div id="unlockedNextBanner" class="unlocked-next-banner ${postJustUnlocked ? "show" : ""}">
+          <div class="unlocked-next-title">🎉 Video Unlocked! Want more like this?</div>
+          <div class="unlocked-next-sub">
+            Your video link opened! Check out the <strong>suggested posts</strong> below to unlock another one next.
+            <div style="color:#fde68a; margin-top:3px;">වීඩියෝව unlock වුණා! ඊළඟට තවත් post එකක් බලන්න පහළ තියෙන <strong>suggested posts</strong> තෝරන්න.</div>
+          </div>
+          <button type="button" id="jumpSuggestedBtn" class="btn-indigo">👇 View Suggested Posts</button>
         </div>
       `;
 
-      document.getElementById("copyWatchLinkBtn").addEventListener("click", async () => {
+      mountUnlockPopup(item, botTargetUrl);
+      renderRelatedPosts(postId, postJustUnlocked);
+
+      if (unlockPopupDismissedForPost !== postId) {
+        unlockModalOverlay.classList.add("open");
+      }
+
+      const reopenBtn = document.getElementById("reopenUnlockPopupBtn");
+      if (reopenBtn) {
+        reopenBtn.addEventListener("click", () => {
+          unlockPopupDismissedForPost = "";
+          openUnlockPopup();
+        });
+      }
+
+      const jumpBtn = document.getElementById("jumpSuggestedBtn");
+      if (jumpBtn) {
+        jumpBtn.addEventListener("click", () => {
+          relatedSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        });
+      }
+
+      const starsGroup = document.getElementById("starsGroup");
+      if (starsGroup) {
+        starsGroup.addEventListener("mouseleave", () => {
+          paintStars(getSavedUserRating(postId), false);
+        });
+        for (let s = 1; s <= 5; s++) {
+          const starBtn = document.getElementById(`rateStar${s}`);
+          if (!starBtn) continue;
+          starBtn.addEventListener("mouseenter", () => paintStars(s, true));
+          starBtn.addEventListener("click", () => submitPostRating(postId, s));
+        }
+      }
+
+      const heroWrap = document.getElementById("watchHeroWrap");
+      if (heroWrap && item.thumb_url) {
+        heroWrap.addEventListener("click", () => {
+          openLightbox(item.thumb_url, item.title || "Thumbnail preview");
+        });
+      }
+
+      document.getElementById("sharePostBtn").addEventListener("click", async () => {
         try {
           await navigator.clipboard.writeText(getWatchUrl(item._key));
-          showToast("Post link copied");
+          showToast("Post link copied! • Link එක copy වුණා");
         } catch {
           showToast("Copy failed");
         }
       });
+    }
+
+    function syncStudioUI() {
+      studioLoginCard.style.display = isAuthenticated ? "none" : "block";
+      studioDashboard.style.display = isAuthenticated ? "block" : "none";
+      logoutBtn.style.display = isAuthenticated ? "inline-flex" : "none";
+      updateGlobalStats();
+      if (isAuthenticated) {
+        renderManageList();
+      }
     }
 
     function handleRoute() {
@@ -677,23 +2603,40 @@
       navHomeBtn.classList.remove("active-nav");
       navStudioBtn.classList.remove("active-nav");
 
-      // Stop playing video when leaving watch view
-      const activeVid = watchCard.querySelector("video");
-      if (activeVid) activeVid.pause();
-
       if (rawHash.startsWith("#watch=")) {
+        welcomePopupOverlay.classList.remove("open");
         const id = decodeURIComponent(rawHash.slice("#watch=".length));
+        const isNewVisit = activeWatchId !== id;
+        activeWatchId = id;
         viewWatch.classList.add("active");
-        renderWatchView(id);
-      } else if (rawHash === "#studio") {
-        document.title = "Studio — PhotoHub";
-        viewStudio.classList.add("active");
-        navStudioBtn.classList.add("active-nav");
-        syncStudioUI();
+        renderWatchView(id, isNewVisit);
       } else {
-        document.title = "PhotoHub — Video Vault";
-        viewHome.classList.add("active");
-        navHomeBtn.classList.add("active-nav");
+        watchRenderToken++;
+        activeWatchId = "";
+        postJustUnlocked = false;
+        scrollToSuggestedOnReturn = false;
+        unlockPopupDismissedForPost = "";
+        unlockModalOverlay.classList.remove("open");
+        closeLightbox();
+        if (countdownInterval) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+        }
+        relatedSection.style.display = "none";
+        stepAwaitingReturn = createEmptyStepArray(false);
+        earlyReturnData = null;
+        if (rawHash === "#studio") {
+          welcomePopupOverlay.classList.remove("open");
+          document.title = "Studio — PhotoHub";
+          viewStudio.classList.add("active");
+          navStudioBtn.classList.add("active-nav");
+          syncStudioUI();
+        } else {
+          document.title = "PhotoHub — Video Vault";
+          viewHome.classList.add("active");
+          navHomeBtn.classList.add("active-nav");
+          maybeShowWelcomePopup();
+        }
       }
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -728,20 +2671,63 @@
       showToast("Signed out");
     });
 
+    function updateStudioThumbnailPreview() {
+      const url = (addThumbInput.value || "").trim();
+      if (!url || !/^https?:\/\//i.test(url)) {
+        studioThumbPreview.classList.remove("show");
+        studioPreviewImg.removeAttribute("src");
+        return;
+      }
+      studioThumbPreview.classList.add("show");
+      studioPreviewStatus.textContent = "Loading preview...";
+      studioPreviewImg.onload = () => {
+        studioPreviewStatus.textContent = "Preview ready (uncropped view)";
+      };
+      studioPreviewImg.onerror = () => {
+        studioPreviewStatus.textContent = "Could not load image preview";
+      };
+      studioPreviewImg.src = url;
+    }
+
+    addThumbInput.addEventListener("input", updateStudioThumbnailPreview);
+
+    copyPublishedQuickBtn.addEventListener("click", async () => {
+      if (!lastPublishedWatchUrl) return;
+      try {
+        await navigator.clipboard.writeText(lastPublishedWatchUrl);
+        showToast("New post link copied!");
+      } catch {
+        showToast("Copy failed");
+      }
+    });
+
     document.getElementById("addVideoForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!isAuthenticated) return;
 
       const title = document.getElementById("addTitle").value.trim();
       const thumb_url = document.getElementById("addThumb").value.trim();
-      const rawUrl = document.getElementById("addVideo").value.trim();
+      const rawPayload = document.getElementById("addBotPayload").value.trim();
       const msgEl = document.getElementById("studioMsg");
+
+      let bot_link = "";
+      let file_unique_id = "";
+      if (rawPayload.startsWith("http")) {
+        bot_link = rawPayload;
+      } else if (rawPayload) {
+        file_unique_id = rawPayload;
+        bot_link = `https://t.me/${BOT_USERNAME}?start=vid_${encodeURIComponent(rawPayload)}`;
+      }
 
       const payload = {
         title,
         thumb_url,
-        video_url: rawUrl.includes("t.me/") ? "" : rawUrl,
-        bot_link: rawUrl.includes("t.me/") ? rawUrl : "",
+        bot_link,
+        file_unique_id,
+        views: 0,
+        unlocked: 0,
+        ratingSum: 0,
+        ratingCount: 0,
         source: "manual",
         created_at: Math.floor(Date.now() / 1000)
       };
@@ -753,11 +2739,19 @@
       });
 
       if (res.ok) {
+        const created = await res.json();
+        const newKey = created?.name || "";
         msgEl.style.color = "#4ade80";
-        msgEl.textContent = "Published! bot.py watcher will send photo to public group.";
+        msgEl.textContent = "Published! 6-step popup is live and bot.py will notify the public group.";
+        if (newKey) {
+          lastPublishedWatchUrl = getWatchUrl(newKey);
+          publishedQuickUrl.textContent = lastPublishedWatchUrl;
+          publishedQuickBox.classList.add("show");
+        }
         e.target.reset();
+        updateStudioThumbnailPreview();
         await fetchVideos();
-        setTimeout(() => { msgEl.textContent = ""; }, 4000);
+        setTimeout(() => { msgEl.textContent = ""; }, 5000);
       } else {
         msgEl.style.color = "#f87171";
         msgEl.textContent = "Publish failed.";
@@ -782,18 +2776,28 @@
         : `<p style="color:#94a3b8;">No posts available.</p>`;
 
       sorted.forEach((item) => {
+        const ratingInfo = getAverageRating(item);
         const row = document.createElement("div");
         row.className = "manage-row";
         row.innerHTML = `
           <div>
             <strong>${escapeHtml(item.title || "Untitled")}</strong>
-            <div style="font-size:12px; color:#94a3b8;">ID: ${escapeHtml(item._key)}</div>
+            <div style="font-size:12px; color:#94a3b8;">🔒 ${Number(item.unlocked || 0)} unlocked • 👁 ${Number(item.views || 0)} views • ⭐ ${ratingInfo.text} • ${getUnlockRateText(item)}</div>
           </div>
-          <div style="display:flex; gap:8px;">
-            <button class="btn-indigo open-post-btn">Watch</button>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn-ghost copy-manage-btn">Copy Link</button>
+            <button class="btn-indigo open-post-btn">Open Unlock Page</button>
             <button class="btn-ghost del-post-btn">Delete</button>
           </div>
         `;
+        row.querySelector(".copy-manage-btn").addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(getWatchUrl(item._key));
+            showToast("Post link copied!");
+          } catch {
+            showToast("Copy failed");
+          }
+        });
         row.querySelector(".open-post-btn").addEventListener("click", () => {
           navigateTo(`#watch=${encodeURIComponent(item._key)}`);
         });
@@ -802,58 +2806,114 @@
       });
     }
 
+    function resetPagination() {
+      visibleLimit = POSTS_PER_PAGE;
+    }
+
     document.querySelectorAll(".tab-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
         currentFilter = btn.dataset.filter;
+        resetPagination();
         renderHomeGrid();
       });
     });
 
-    searchInput.addEventListener("input", renderHomeGrid);
+    function syncClearSearchBtn() {
+      clearSearchBtn.classList.toggle("visible", searchInput.value.length > 0);
+    }
+
+    searchInput.addEventListener("input", () => {
+      syncClearSearchBtn();
+      resetPagination();
+      renderHomeGrid();
+    });
+
+    clearSearchBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      syncClearSearchBtn();
+      resetPagination();
+      renderHomeGrid();
+      searchInput.focus();
+    });
+
     sortSelect.addEventListener("change", (e) => {
       currentSort = e.target.value;
+      resetPagination();
+      renderHomeGrid();
+    });
+
+    loadMoreBtn.addEventListener("click", () => {
+      visibleLimit += POSTS_PER_PAGE;
       renderHomeGrid();
     });
 
     function renderHomeGrid() {
+      updateGlobalStats();
+      if (!hasLoadedOnce) {
+        renderSkeletonGrid();
+        return;
+      }
+
       const q = searchInput.value.trim().toLowerCase();
       const list = allVideos.filter((v) => {
         const src = v.source || (v.telegram_file_id ? "group" : "manual");
-        const okTab = currentFilter === "all" || src === currentFilter;
+        let okTab = true;
+        if (currentFilter === "trending") {
+          okTab = isTrendingPost(v);
+        } else if (currentFilter !== "all") {
+          okTab = src === currentFilter;
+        }
         const okSearch = !q || (v.title || "").toLowerCase().includes(q);
         return okTab && okSearch;
       });
 
       if (currentSort === "oldest") {
         list.sort((a, b) => (a.created_at || 0) - (b.created_at || 0));
+      } else if (currentSort === "most_views") {
+        list.sort((a, b) => Number(b.views || 0) - Number(a.views || 0));
+      } else if (currentSort === "most_unlocked") {
+        list.sort((a, b) => Number(b.unlocked || 0) - Number(a.unlocked || 0));
+      } else if (currentSort === "top_rated") {
+        list.sort((a, b) => {
+          const ra = getAverageRating(a);
+          const rb = getAverageRating(b);
+          if (rb.avg !== ra.avg) return rb.avg - ra.avg;
+          return rb.count - ra.count;
+        });
       } else if (currentSort === "az") {
         list.sort((a, b) => (a.title || "").localeCompare(b.title || ""));
       } else {
         list.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
       }
 
-      videoCount.textContent = allVideos.length;
       videoGrid.innerHTML = "";
 
       if (!list.length) {
+        loadMoreWrap.classList.remove("show");
         videoGrid.innerHTML = `<div class="empty-state">No video posts found.</div>`;
         return;
       }
 
-      list.forEach((item) => {
+      const visibleList = list.slice(0, visibleLimit);
+
+      visibleList.forEach((item, idx) => {
         const src = item.source || (item.telegram_file_id ? "group" : "manual");
-        const tgLink = item.bot_link || item.group_link || "";
         const dateText = item.created_at ? new Date(item.created_at * 1000).toLocaleDateString() : "";
+        const hotBadge = isTrendingPost(item) ? `<span class="trending-badge">🔥 Trending</span>` : "";
+        const ratingInfo = getAverageRating(item);
 
         const card = document.createElement("article");
         card.className = "post-card";
+        card.style.animationDelay = `${Math.min(idx, 8) * 35}ms`;
         card.innerHTML = `
           <div class="thumb-box">
+            ${hotBadge}
             ${item.thumb_url
               ? `<img src="${escapeHtml(item.thumb_url)}" alt="${escapeHtml(item.title || "Video")}" loading="lazy" />`
               : `<div class="no-thumb">No Thumbnail Photo</div>`}
+            <span class="thumb-hover-cta">🔓 Unlock & Watch</span>
           </div>
           <div class="post-content">
             <div>
@@ -864,10 +2924,16 @@
                 <span>${escapeHtml(dateText)}</span>
               </div>
               <div class="post-title">${escapeHtml(item.title || "Untitled Video")}</div>
+              <div class="post-metrics">
+                <span>🔒 <strong>${Number(item.unlocked || 0)}</strong> unlocked</span>
+                <span>•</span>
+                <span>👁 <strong>${Number(item.views || 0)}</strong> views</span>
+                ${ratingInfo.count > 0 ? `<span class="star-pill">⭐ ${ratingInfo.avg.toFixed(1)} (${ratingInfo.count})</span>` : ""}
+                <span class="rate-pill">${getUnlockRateText(item)}</span>
+              </div>
             </div>
             <div class="post-footer">
-              <button class="btn-red watch-open-btn">Watch</button>
-              ${tgLink ? `<a class="btn-link btn-indigo" href="${escapeHtml(tgLink)}" target="_blank" rel="noopener noreferrer">Telegram</a>` : ""}
+              <button class="btn-red watch-open-btn">🔓 Unlock & Watch</button>
               <button class="btn-ghost copy-link-btn">Copy Link</button>
             </div>
           </div>
@@ -879,7 +2945,7 @@
         card.querySelector(".copy-link-btn").addEventListener("click", async () => {
           try {
             await navigator.clipboard.writeText(getWatchUrl(item._key));
-            showToast("Post link copied");
+            showToast("Unlock page link copied");
           } catch {
             showToast("Copy failed");
           }
@@ -887,6 +2953,15 @@
 
         videoGrid.appendChild(card);
       });
+
+      if (list.length > visibleList.length) {
+        const remaining = list.length - visibleList.length;
+        loadMoreMeta.textContent = `Showing ${visibleList.length} of ${list.length} posts (${remaining} more available)`;
+        loadMoreBtn.textContent = `Load More Posts (+${Math.min(POSTS_PER_PAGE, remaining)})`;
+        loadMoreWrap.classList.add("show");
+      } else {
+        loadMoreWrap.classList.remove("show");
+      }
     }
 
     async function fetchVideos() {
@@ -896,20 +2971,27 @@
         allVideos = data && typeof data === "object"
           ? Object.entries(data).map(([key, val]) => ({ _key: key, ...val }))
           : [];
+        hasLoadedOnce = true;
         renderHomeGrid();
         if (isAuthenticated) renderManageList();
-        if ((window.location.hash || "").startsWith("#watch=")) {
-          const id = decodeURIComponent(window.location.hash.slice("#watch=".length));
-          renderWatchView(id);
+        if (activeWatchId) {
+          renderRelatedPosts(activeWatchId, postJustUnlocked);
+          renderRatingWidget(activeWatchId);
+          if (!unlockModalContent.querySelector(".unlock-steps")) {
+            renderWatchView(activeWatchId, true);
+          }
         }
       } catch (err) {
+        hasLoadedOnce = true;
+        renderHomeGrid();
         console.error("Fetch error:", err);
       }
     }
 
+    renderSkeletonGrid();
     fetchVideos();
     handleRoute();
-    setInterval(fetchVideos, 6000);
+    setInterval(fetchVideos, 8000);
   </script>
 </body>
 </html>
