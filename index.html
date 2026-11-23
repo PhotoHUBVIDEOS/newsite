@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="monetag" content="cb81a9cc3fc988b07aa393f9fa2ca685" />
   <title>PhotoHub — Video Vault</title>
-  <meta name="monetag" content="cb81a9cc3fc988b07aa393f9fa2ca685">
+
   <style>
     :root {
       --bg-main: #090d16;
@@ -215,6 +216,81 @@
     .page-view.active {
       display: block;
       animation: fadeSlideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    /* Ad Slots Styling */
+    .ad-slot-box {
+      width: 100%;
+      margin: 18px auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: auto;
+      text-align: center;
+    }
+
+    .ad-slot-desktop {
+      display: flex;
+    }
+
+    .ad-slot-mobile {
+      display: none;
+    }
+
+    .native-ad-wrap {
+      width: 100%;
+      margin: 24px auto 18px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid var(--border);
+    }
+
+    .native-ad-tag {
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .vault-layout-split {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .vault-main-col {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .vault-side-rail {
+      width: 168px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 84px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    @media (max-width: 1120px) {
+      .vault-side-rail {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .ad-slot-desktop {
+        display: none;
+      }
+      .ad-slot-mobile {
+        display: flex;
+      }
     }
 
     /* Animated Front Welcome Popup Modal */
@@ -604,7 +680,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
       gap: 20px;
     }
 
@@ -804,28 +880,73 @@
       min-width: 135px;
     }
 
-    /* Pagination / Load More */
-    .load-more-wrap {
+    /* Numbered Pagination Bar (1, 2, 3, 4...) */
+    .pagination-wrap {
       display: none;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
-      margin-top: 28px;
+      gap: 12px;
+      margin-top: 30px;
     }
 
-    .load-more-wrap.show {
+    .pagination-wrap.show {
       display: flex;
     }
 
-    .load-more-meta {
+    .pagination-meta {
       font-size: 12px;
       color: var(--text-muted);
     }
 
-    .load-more-btn {
-      min-width: 210px;
-      padding: 12px 20px;
+    .pagination-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .page-num-btn {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border-radius: 13px;
+      background: #141927;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #e2e8f0;
       font-size: 14px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.18s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .page-num-btn:hover:not(:disabled) {
+      background: #1e263b;
+      border-color: rgba(139, 92, 246, 0.45);
+      transform: translateY(-2px);
+    }
+
+    .page-num-btn.active {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      border-color: rgba(167, 139, 250, 0.65);
+      color: #ffffff;
+      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
+    }
+
+    .page-num-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .page-ellipsis {
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 0 4px;
+      user-select: none;
     }
 
     /* Skeleton Loader */
@@ -1586,17 +1707,9 @@
       100% { background-position: -200% 0; }
     }
   </style>
+
+  <!-- Adsterra Popunder -->
   <script data-cfasync="false" src="https://afders.org/1/70f1abda70f7350e05240802b7f897d7"></script>
-  <script>
-  atOptions = {
-    'key' : 'ff5a75665cce17d4fd13f48091701917',
-    'format' : 'iframe',
-    'height' : 60,
-    'width' : 468,
-    'params' : {}
-  };
-</script>
-<script src="https://bicea.org/22/ff5a75665cce17d4fd13f48091701917"></script>
 </head>
 <body>
   <!-- Animated Front Welcome Popup -->
@@ -1665,6 +1778,33 @@
         <a class="btn-link btn-red" href="https://asiafilm.org/4/7d57dfa78084d05338da347b633828fe" target="_blank" rel="noopener noreferrer">🔥 Sponsor Link 2</a>
       </div>
 
+      <!-- Top Responsive Banner (Desktop 728x90 / Mobile 320x50) -->
+      <div class="ad-slot-box ad-slot-desktop">
+        <script>
+          atOptions = {
+            'key' : 'aa908c857b39ed22a2b94a58eaa5e47a',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+          };
+        </script>
+        <script data-cfasync="false" src="https://bicea.org/22/aa908c857b39ed22a2b94a58eaa5e47a"></script>
+      </div>
+
+      <div class="ad-slot-box ad-slot-mobile">
+        <script>
+          atOptions = {
+            'key' : 'eedc3aee15f932416a6638742fb89cd2',
+            'format' : 'iframe',
+            'height' : 50,
+            'width' : 320,
+            'params' : {}
+          };
+        </script>
+        <script data-cfasync="false" src="https://bicea.org/22/eedc3aee15f932416a6638742fb89cd2"></script>
+      </div>
+
       <div class="toolbar">
         <div class="toolbar-left">
           <div class="search-box">
@@ -1689,11 +1829,51 @@
         </div>
       </div>
 
-      <div id="videoGrid" class="grid"></div>
+      <div class="vault-layout-split">
+        <div class="vault-main-col">
+          <div id="videoGrid" class="grid"></div>
 
-      <div id="loadMoreWrap" class="load-more-wrap">
-        <div id="loadMoreMeta" class="load-more-meta"></div>
-        <button type="button" id="loadMoreBtn" class="btn-indigo load-more-btn">Load More Posts</button>
+          <!-- Numbered Pagination Bar (1, 2, 3, 4...) -->
+          <div id="paginationWrap" class="pagination-wrap">
+            <div id="paginationMeta" class="pagination-meta"></div>
+            <div id="paginationBar" class="pagination-bar" role="navigation" aria-label="Pagination"></div>
+          </div>
+
+          <!-- Native Banner Below Grid -->
+          <div class="native-ad-wrap">
+            <div class="native-ad-tag">Sponsored Recommendations</div>
+            <script async fetchpriority="high" data-cfasync="false" src="https://bicea.org/21/c16790e4b60bb37f6817c6f9963ca0af"></script>
+            <div id="container-c16790e4b60bb37f6817c6f9963ca0af"></div>
+          </div>
+        </div>
+
+        <!-- Desktop Sticky Side Rail (160x600 & 160x300) -->
+        <aside class="vault-side-rail" aria-label="Sponsored sidebar">
+          <div>
+            <script>
+              atOptions = {
+                'key' : 'a1966a2c8cde0acd7d2e228524f06e0b',
+                'format' : 'iframe',
+                'height' : 600,
+                'width' : 160,
+                'params' : {}
+              };
+            </script>
+            <script data-cfasync="false" src="https://bicea.org/22/a1966a2c8cde0acd7d2e228524f06e0b"></script>
+          </div>
+          <div>
+            <script>
+              atOptions = {
+                'key' : '3557508b903fd5fb6e8db90371631a3f',
+                'format' : 'iframe',
+                'height' : 300,
+                'width' : 160,
+                'params' : {}
+              };
+            </script>
+            <script data-cfasync="false" src="https://bicea.org/22/3557508b903fd5fb6e8db90371631a3f"></script>
+          </div>
+        </aside>
       </div>
     </section>
 
@@ -1703,6 +1883,21 @@
         <button id="backFromWatchBtn" class="btn-ghost">← Back to Vault</button>
       </div>
       <div id="watchCard" class="watch-card">Loading post...</div>
+
+      <!-- Banner 300x250 Below Watch Card -->
+      <div class="ad-slot-box" style="margin-top: 20px;">
+        <script>
+          atOptions = {
+            'key' : 'bcc3ee117ea9308e060c930e2abe4fb7',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script data-cfasync="false" src="https://bicea.org/22/bcc3ee117ea9308e060c930e2abe4fb7"></script>
+      </div>
+
       <div id="relatedSection" class="related-wrap" style="display: none;">
         <h3 id="relatedHeading" class="related-heading">More Videos Like This</h3>
         <div id="relatedGrid" class="related-grid"></div>
@@ -1817,7 +2012,7 @@
     let hasLoadedOnce = false;
     let currentFilter = "all";
     let currentSort = "newest";
-    let visibleLimit = POSTS_PER_PAGE;
+    let currentPage = 1;
     let activeWatchId = "";
     let unlockState = createEmptyStepArray(false);
     let adLeftAtMs = createEmptyStepArray(0);
@@ -1847,9 +2042,9 @@
     const navStudioBtn = document.getElementById("navStudioBtn");
     const logoutBtn = document.getElementById("logoutBtn");
     const videoGrid = document.getElementById("videoGrid");
-    const loadMoreWrap = document.getElementById("loadMoreWrap");
-    const loadMoreMeta = document.getElementById("loadMoreMeta");
-    const loadMoreBtn = document.getElementById("loadMoreBtn");
+    const paginationWrap = document.getElementById("paginationWrap");
+    const paginationMeta = document.getElementById("paginationMeta");
+    const paginationBar = document.getElementById("paginationBar");
     const videoCount = document.getElementById("videoCount");
     const navTotalViews = document.getElementById("navTotalViews");
     const navTotalUnlocks = document.getElementById("navTotalUnlocks");
@@ -2121,7 +2316,7 @@
     }
 
     function renderSkeletonGrid() {
-      loadMoreWrap.classList.remove("show");
+      paginationWrap.classList.remove("show");
       videoGrid.innerHTML = Array.from({ length: 6 })
         .map(() => `
           <div class="skeleton-card">
@@ -2338,7 +2533,7 @@
       const candidates = allVideos.filter((v) => v._key !== currentItem._key);
       const words = (currentItem.title || "")
         .toLowerCase()
-        .split(/[^a-z0-9\u0D80-\u0DFF]+/i)
+        .split(/[^a-z0-9඀-෿]+/i)
         .filter((w) => w.length >= 3);
 
       return candidates
@@ -2818,7 +3013,91 @@
     }
 
     function resetPagination() {
-      visibleLimit = POSTS_PER_PAGE;
+      currentPage = 1;
+    }
+
+    function getPageNumbers(totalPages, activePage) {
+      if (totalPages <= 7) {
+        return Array.from({ length: totalPages }, (_, i) => i + 1);
+      }
+      if (activePage <= 4) {
+        return [1, 2, 3, 4, 5, "...", totalPages];
+      }
+      if (activePage >= totalPages - 3) {
+        return [1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+      }
+      return [1, "...", activePage - 1, activePage, activePage + 1, "...", totalPages];
+    }
+
+    function renderPagination(totalItems, totalPages) {
+      if (totalItems <= POSTS_PER_PAGE || totalPages <= 1) {
+        paginationWrap.classList.remove("show");
+        paginationBar.innerHTML = "";
+        return;
+      }
+
+      const startItem = (currentPage - 1) * POSTS_PER_PAGE + 1;
+      const endItem = Math.min(currentPage * POSTS_PER_PAGE, totalItems);
+      paginationMeta.textContent = `Page ${currentPage} of ${totalPages} • Showing ${startItem}–${endItem} of ${totalItems} posts`;
+
+      paginationBar.innerHTML = "";
+
+      const prevBtn = document.createElement("button");
+      prevBtn.type = "button";
+      prevBtn.className = "page-num-btn";
+      prevBtn.textContent = "‹";
+      prevBtn.title = "Previous Page";
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderHomeGrid();
+          document.querySelector(".toolbar")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+      paginationBar.appendChild(prevBtn);
+
+      const pageItems = getPageNumbers(totalPages, currentPage);
+      pageItems.forEach((p) => {
+        if (p === "...") {
+          const dots = document.createElement("span");
+          dots.className = "page-ellipsis";
+          dots.textContent = "...";
+          paginationBar.appendChild(dots);
+          return;
+        }
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `page-num-btn ${p === currentPage ? "active" : ""}`;
+        btn.textContent = String(p);
+        btn.setAttribute("aria-label", `Page ${p}`);
+        if (p === currentPage) btn.setAttribute("aria-current", "page");
+        btn.addEventListener("click", () => {
+          if (currentPage !== p) {
+            currentPage = p;
+            renderHomeGrid();
+            document.querySelector(".toolbar")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        });
+        paginationBar.appendChild(btn);
+      });
+
+      const nextBtn = document.createElement("button");
+      nextBtn.type = "button";
+      nextBtn.className = "page-num-btn";
+      nextBtn.textContent = "›";
+      nextBtn.title = "Next Page";
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderHomeGrid();
+          document.querySelector(".toolbar")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+      paginationBar.appendChild(nextBtn);
+
+      paginationWrap.classList.add("show");
     }
 
     document.querySelectorAll(".tab-btn").forEach((btn) => {
@@ -2852,11 +3131,6 @@
     sortSelect.addEventListener("change", (e) => {
       currentSort = e.target.value;
       resetPagination();
-      renderHomeGrid();
-    });
-
-    loadMoreBtn.addEventListener("click", () => {
-      visibleLimit += POSTS_PER_PAGE;
       renderHomeGrid();
     });
 
@@ -2902,14 +3176,18 @@
       videoGrid.innerHTML = "";
 
       if (!list.length) {
-        loadMoreWrap.classList.remove("show");
+        paginationWrap.classList.remove("show");
         videoGrid.innerHTML = `<div class="empty-state">No video posts found.</div>`;
         return;
       }
 
-      const visibleList = list.slice(0, visibleLimit);
+      const totalPages = Math.max(1, Math.ceil(list.length / POSTS_PER_PAGE));
+      if (currentPage > totalPages) currentPage = totalPages;
 
-      visibleList.forEach((item, idx) => {
+      const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+      const pageSlice = list.slice(startIndex, startIndex + POSTS_PER_PAGE);
+
+      pageSlice.forEach((item, idx) => {
         const src = item.source || (item.telegram_file_id ? "group" : "manual");
         const dateText = item.created_at ? new Date(item.created_at * 1000).toLocaleDateString() : "";
         const hotBadge = isTrendingPost(item) ? `<span class="trending-badge">🔥 Trending</span>` : "";
@@ -2965,14 +3243,7 @@
         videoGrid.appendChild(card);
       });
 
-      if (list.length > visibleList.length) {
-        const remaining = list.length - visibleList.length;
-        loadMoreMeta.textContent = `Showing ${visibleList.length} of ${list.length} posts (${remaining} more available)`;
-        loadMoreBtn.textContent = `Load More Posts (+${Math.min(POSTS_PER_PAGE, remaining)})`;
-        loadMoreWrap.classList.add("show");
-      } else {
-        loadMoreWrap.classList.remove("show");
-      }
+      renderPagination(list.length, totalPages);
     }
 
     async function fetchVideos() {
@@ -3004,6 +3275,5 @@
     handleRoute();
     setInterval(fetchVideos, 8000);
   </script>
-  <script data-cfasync="false" src="https://bicea.org/14/17988d2419a9c5697086f6fecf4bee2e"></script>
 </body>
 </html>
