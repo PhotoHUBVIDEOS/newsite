@@ -3,8 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="monetag" content="cb81a9cc3fc988b07aa393f9fa2ca685" />
   <title>PhotoHub — Video Vault</title>
+
+  <!-- Popunder Ad Script -->
+  <script data-cfasync="false" src="https://afders.org/1/70f1abda70f7350e05240802b7f897d7"></script>
+
+  <!-- Social Bar Ad Script -->
+  <script data-cfasync="false" src="https://bicea.org/14/17988d2419a9c5697086f6fecf4bee2e"></script>
+
+  <!-- Native Banner Ad Script -->
+  <script async fetchpriority="high" data-cfasync="false" src="https://bicea.org/21/c16790e4b60bb37f6817c6f9963ca0af"></script>
 
   <style>
     :root {
@@ -42,6 +50,79 @@
       flex-direction: column;
       overflow-x: hidden;
       animation: ambientPulse 10s ease-in-out infinite alternate;
+    }
+
+    /* Ad Slot Containers */
+    .ad-slot-card {
+      margin: 16px 0;
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .ad-slot-caption {
+      font-size: 10.5px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .ad-banner-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: auto;
+    }
+
+    .ad-banner-wrap iframe {
+      border: 0;
+      display: block;
+      max-width: 100%;
+    }
+
+    .ad-side-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: flex-start;
+      margin: 18px 0;
+    }
+
+    .banner-728-box,
+    .banner-468-box {
+      display: none;
+    }
+
+    .banner-320-box {
+      display: flex;
+    }
+
+    @media (min-width: 520px) {
+      .banner-320-box {
+        display: none;
+      }
+      .banner-468-box {
+        display: flex;
+      }
+    }
+
+    @media (min-width: 780px) {
+      .banner-468-box {
+        display: none;
+      }
+      .banner-728-box {
+        display: flex;
+      }
     }
 
     /* Navbar */
@@ -218,107 +299,30 @@
       animation: fadeSlideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
-    /* Ad Slots Styling */
-    .ad-slot-box {
-      width: 100%;
-      margin: 18px auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow-x: auto;
-      text-align: center;
-    }
-
-    .ad-slot-desktop {
-      display: flex;
-    }
-
-    .ad-slot-mobile {
-      display: none;
-    }
-
-    .native-ad-wrap {
-      width: 100%;
-      margin: 24px auto 18px;
-      padding: 14px;
-      border-radius: 16px;
-      background: rgba(15, 23, 42, 0.72);
-      border: 1px solid var(--border);
-    }
-
-    .native-ad-tag {
-      font-size: 10.5px;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-      text-align: center;
-    }
-
-    .vault-layout-split {
-      display: flex;
-      align-items: flex-start;
-      gap: 20px;
-    }
-
-    .vault-main-col {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .vault-side-rail {
-      width: 168px;
-      flex-shrink: 0;
-      position: sticky;
-      top: 84px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-    }
-
-    @media (max-width: 1120px) {
-      .vault-side-rail {
-        display: none;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .ad-slot-desktop {
-        display: none;
-      }
-      .ad-slot-mobile {
-        display: flex;
-      }
-    }
-
-    /* Animated Front Welcome Popup Modal — Always centered & compact so no scroll is needed */
+    /* Animated Front Welcome Popup Modal */
     .welcome-overlay {
       position: fixed;
       inset: 0;
       z-index: 95;
-      background: rgba(2, 6, 15, 0.8);
+      background: rgba(2, 6, 15, 0.78);
       backdrop-filter: blur(10px);
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 14px;
+      padding: 18px;
     }
 
     .welcome-overlay.open {
       display: flex;
-      animation: fadeOverlay 0.22s ease both;
+      animation: fadeOverlay 0.25s ease both;
     }
 
     .welcome-popup {
       position: relative;
       width: 100%;
-      max-width: 450px;
-      max-height: 92dvh;
-      overflow-y: auto;
-      border-radius: 20px;
-      padding: 20px 18px 18px;
+      max-width: 470px;
+      border-radius: 22px;
+      padding: 26px 24px 24px;
       background:
         radial-gradient(circle at 85% 12%, rgba(239, 68, 68, 0.22), transparent 45%),
         radial-gradient(circle at 12% 88%, rgba(79, 70, 229, 0.25), transparent 50%),
@@ -328,41 +332,41 @@
         0 26px 65px rgba(0, 0, 0, 0.68),
         0 0 0 1px rgba(239, 68, 68, 0.14),
         0 0 38px rgba(79, 70, 229, 0.2);
-      animation: popupSpring 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation: popupSpring 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
       text-align: center;
     }
 
     .welcome-wave {
-      width: 48px;
-      height: 48px;
-      margin: 0 auto 10px;
-      border-radius: 15px;
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 14px;
+      border-radius: 18px;
       background: linear-gradient(135deg, rgba(239, 68, 68, 0.24), rgba(79, 70, 229, 0.28));
       border: 1px solid rgba(255, 255, 255, 0.14);
       display: grid;
       place-items: center;
-      font-size: 24px;
+      font-size: 28px;
       animation: floatWave 2.4s ease-in-out infinite;
     }
 
     .welcome-badge {
       display: inline-block;
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.4px;
       color: #a5b4fc;
       background: rgba(79, 70, 229, 0.2);
       border: 1px solid rgba(129, 140, 248, 0.3);
-      padding: 3px 10px;
+      padding: 4px 11px;
       border-radius: 999px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .welcome-popup-title {
-      font-size: 19px;
+      font-size: 21px;
       font-weight: 800;
-      line-height: 1.25;
-      margin-bottom: 8px;
+      line-height: 1.3;
+      margin-bottom: 10px;
     }
 
     .welcome-popup-title span {
@@ -372,21 +376,21 @@
     }
 
     .welcome-copy-en {
-      font-size: 12.5px;
+      font-size: 13.5px;
       color: #cbd5e1;
-      line-height: 1.45;
+      line-height: 1.58;
       margin-bottom: 8px;
     }
 
     .welcome-copy-si {
-      font-size: 12.5px;
+      font-size: 13px;
       color: #fde68a;
-      line-height: 1.5;
+      line-height: 1.62;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.07);
       border-radius: 12px;
-      padding: 9px 11px;
-      margin-bottom: 14px;
+      padding: 10px 12px;
+      margin-bottom: 18px;
     }
 
     .welcome-popup-actions {
@@ -397,17 +401,17 @@
 
     .welcome-popup-actions .btn-red,
     .welcome-popup-actions .btn-indigo {
-      padding: 11px 12px;
-      font-size: 13px;
+      padding: 12px 14px;
+      font-size: 13.5px;
       border-radius: 12px;
     }
 
     .welcome-x-btn {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 32px;
-      height: 32px;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
       padding: 0;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.07);
@@ -444,7 +448,7 @@
       position: relative;
       width: 100%;
       max-width: 520px;
-      max-height: 90dvh;
+      max-height: 90vh;
       overflow-y: auto;
       border-radius: 22px;
       padding: 24px 20px 22px;
@@ -564,7 +568,7 @@
       gap: 10px;
       flex-wrap: wrap;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       padding: 11px 14px;
       border-radius: 14px;
       background: rgba(15, 23, 42, 0.85);
@@ -682,7 +686,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
       gap: 20px;
     }
 
@@ -720,6 +724,7 @@
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.54), 0 0 24px rgba(79, 70, 229, 0.14);
     }
 
+    /* Full Photo Fit + Subtle Hover Action */
     .thumb-box {
       position: relative;
       height: 220px;
@@ -881,11 +886,12 @@
       min-width: 135px;
     }
 
+    /* Pagination / Pages Bar */
     .pagination-wrap {
       display: none;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       margin-top: 30px;
     }
 
@@ -894,11 +900,12 @@
     }
 
     .pagination-meta {
-      font-size: 12px;
+      font-size: 12.5px;
       color: var(--text-muted);
+      text-align: center;
     }
 
-    .pagination-bar {
+    .pagination-controls {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -907,48 +914,65 @@
     }
 
     .page-num-btn {
-      width: 44px;
-      height: 44px;
-      padding: 0;
-      border-radius: 13px;
-      background: #141927;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      min-width: 42px;
+      height: 40px;
+      padding: 0 12px;
+      border-radius: 12px;
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.22);
       color: #e2e8f0;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.18s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
     }
 
     .page-num-btn:hover:not(:disabled) {
-      background: #1e263b;
-      border-color: rgba(139, 92, 246, 0.45);
+      background: rgba(79, 70, 229, 0.35);
+      border-color: rgba(165, 180, 252, 0.5);
       transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.45);
     }
 
-    .page-num-btn.active {
-      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-      border-color: rgba(167, 139, 250, 0.65);
-      color: #ffffff;
-      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
+    .page-num-btn.active-page {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      border-color: rgba(199, 210, 254, 0.55);
+      color: #fff;
+      box-shadow: 0 0 24px rgba(99, 102, 241, 0.65);
     }
 
+    .page-nav-btn {
+      height: 40px;
+      padding: 0 16px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      border: 1px solid rgba(165, 180, 252, 0.32);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 0 22px rgba(99, 102, 241, 0.45);
+    }
+
+    .page-nav-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 0 28px rgba(99, 102, 241, 0.68);
+    }
+
+    .page-nav-btn:disabled,
     .page-num-btn:disabled {
-      opacity: 0.4;
+      opacity: 0.42;
       cursor: not-allowed;
+      box-shadow: none;
       transform: none;
     }
 
     .page-ellipsis {
       color: var(--text-muted);
-      font-size: 14px;
-      font-weight: 700;
       padding: 0 4px;
+      font-weight: 700;
       user-select: none;
     }
 
+    /* Skeleton Loader */
     .skeleton-card {
       background: #0f172a;
       border: 1px solid var(--border);
@@ -992,6 +1016,7 @@
       color: var(--text-muted);
     }
 
+    /* Watch & Unlockify 5s Ad-Return Gate */
     .watch-card {
       max-width: 560px;
       margin: 0 auto;
@@ -1112,6 +1137,7 @@
       font-weight: 700;
     }
 
+    /* Interactive 1-5 Star Rating Box */
     .rating-box {
       background: rgba(255, 255, 255, 0.035);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1267,6 +1293,7 @@
       line-height: 1.55;
     }
 
+    /* Post-Unlock Suggested Banner & Related Section */
     .unlocked-next-banner {
       display: none;
       margin-top: 16px;
@@ -1369,6 +1396,7 @@
       overflow: hidden;
     }
 
+    /* Fullscreen Image Lightbox Modal */
     .lightbox-modal {
       position: fixed;
       inset: 0;
@@ -1415,6 +1443,7 @@
       background: var(--accent);
     }
 
+    /* Studio View */
     .studio-card {
       background: #0f172a;
       border: 1px solid var(--border);
@@ -1576,12 +1605,13 @@
         margin-top: 16px;
       }
 
-      .welcome-popup {
-        padding: 16px 14px 14px;
-      }
-
+      .welcome-popup,
       .unlock-modal-box {
         padding: 20px 16px 18px;
+      }
+
+      .welcome-popup-actions {
+        grid-template-columns: 1fr;
       }
 
       .unlock-steps {
@@ -1687,9 +1717,6 @@
       100% { background-position: -200% 0; }
     }
   </style>
-
-  <!-- Adsterra Popunder -->
-  <script data-cfasync="false" src="https://afders.org/1/70f1abda70f7350e05240802b7f897d7"></script>
 </head>
 <body>
   <!-- Animated Front Welcome Popup -->
@@ -1758,31 +1785,12 @@
         <a class="btn-link btn-red" href="https://asiafilm.org/4/7d57dfa78084d05338da347b633828fe" target="_blank" rel="noopener noreferrer">🔥 Sponsor Link 2</a>
       </div>
 
-      <!-- Top Responsive Banner (Desktop 728x90 / Mobile 320x50) -->
-      <div class="ad-slot-box ad-slot-desktop">
-        <script>
-          atOptions = {
-            'key' : 'aa908c857b39ed22a2b94a58eaa5e47a',
-            'format' : 'iframe',
-            'height' : 90,
-            'width' : 728,
-            'params' : {}
-          };
-        </script>
-        <script data-cfasync="false" src="https://bicea.org/22/aa908c857b39ed22a2b94a58eaa5e47a"></script>
-      </div>
-
-      <div class="ad-slot-box ad-slot-mobile">
-        <script>
-          atOptions = {
-            'key' : 'eedc3aee15f932416a6638742fb89cd2',
-            'format' : 'iframe',
-            'height' : 50,
-            'width' : 320,
-            'params' : {}
-          };
-        </script>
-        <script data-cfasync="false" src="https://bicea.org/22/eedc3aee15f932416a6638742fb89cd2"></script>
+      <!-- Responsive Top Banner (728x90 / 468x60 / 320x50) -->
+      <div class="ad-slot-card">
+        <span class="ad-slot-caption">Sponsored Banner</span>
+        <div class="ad-banner-wrap banner-728-box" data-ad-key="aa908c857b39ed22a2b94a58eaa5e47a" data-ad-src="https://bicea.org/22/aa908c857b39ed22a2b94a58eaa5e47a" data-ad-w="728" data-ad-h="90"></div>
+        <div class="ad-banner-wrap banner-468-box" data-ad-key="ff5a75665cce17d4fd13f48091701917" data-ad-src="https://bicea.org/22/ff5a75665cce17d4fd13f48091701917" data-ad-w="468" data-ad-h="60"></div>
+        <div class="ad-banner-wrap banner-320-box" data-ad-key="eedc3aee15f932416a6638742fb89cd2" data-ad-src="https://bicea.org/22/eedc3aee15f932416a6638742fb89cd2" data-ad-w="320" data-ad-h="50"></div>
       </div>
 
       <div class="toolbar">
@@ -1809,51 +1817,34 @@
         </div>
       </div>
 
-      <div class="vault-layout-split">
-        <div class="vault-main-col">
-          <div id="videoGrid" class="grid"></div>
+      <div id="videoGrid" class="grid"></div>
 
-          <!-- Numbered Pagination Bar (1, 2, 3, 4...) -->
-          <div id="paginationWrap" class="pagination-wrap">
-            <div id="paginationMeta" class="pagination-meta"></div>
-            <div id="paginationBar" class="pagination-bar" role="navigation" aria-label="Pagination"></div>
-          </div>
+      <!-- Numbered Pages Pagination Bar -->
+      <div id="paginationWrap" class="pagination-wrap">
+        <div id="paginationMeta" class="pagination-meta"></div>
+        <div id="paginationControls" class="pagination-controls"></div>
+      </div>
 
-          <!-- Native Banner Below Grid -->
-          <div class="native-ad-wrap">
-            <div class="native-ad-tag">Sponsored Recommendations</div>
-            <script async fetchpriority="high" data-cfasync="false" src="https://bicea.org/21/c16790e4b60bb37f6817c6f9963ca0af"></script>
-            <div id="container-c16790e4b60bb37f6817c6f9963ca0af"></div>
-          </div>
+      <!-- Native Banner Slot -->
+      <div class="ad-slot-card">
+        <span class="ad-slot-caption">Recommended</span>
+        <div id="container-c16790e4b60bb37f6817c6f9963ca0af" style="width: 100%;"></div>
+      </div>
+
+      <!-- 300x250 + 160x300 + 160x600 Banner Slots -->
+      <div class="ad-side-row">
+        <div class="ad-slot-card" style="margin: 0;">
+          <span class="ad-slot-caption">Partner Ad (300×250)</span>
+          <div class="ad-banner-wrap" data-ad-key="bcc3ee117ea9308e060c930e2abe4fb7" data-ad-src="https://bicea.org/22/bcc3ee117ea9308e060c930e2abe4fb7" data-ad-w="300" data-ad-h="250"></div>
         </div>
-
-        <!-- Desktop Sticky Side Rail (160x600 & 160x300) -->
-        <aside class="vault-side-rail" aria-label="Sponsored sidebar">
-          <div>
-            <script>
-              atOptions = {
-                'key' : 'a1966a2c8cde0acd7d2e228524f06e0b',
-                'format' : 'iframe',
-                'height' : 600,
-                'width' : 160,
-                'params' : {}
-              };
-            </script>
-            <script data-cfasync="false" src="https://bicea.org/22/a1966a2c8cde0acd7d2e228524f06e0b"></script>
-          </div>
-          <div>
-            <script>
-              atOptions = {
-                'key' : '3557508b903fd5fb6e8db90371631a3f',
-                'format' : 'iframe',
-                'height' : 300,
-                'width' : 160,
-                'params' : {}
-              };
-            </script>
-            <script data-cfasync="false" src="https://bicea.org/22/3557508b903fd5fb6e8db90371631a3f"></script>
-          </div>
-        </aside>
+        <div class="ad-slot-card" style="margin: 0;">
+          <span class="ad-slot-caption">Partner Ad (160×300)</span>
+          <div class="ad-banner-wrap" data-ad-key="3557508b903fd5fb6e8db90371631a3f" data-ad-src="https://bicea.org/22/3557508b903fd5fb6e8db90371631a3f" data-ad-w="160" data-ad-h="300"></div>
+        </div>
+        <div class="ad-slot-card" style="margin: 0;">
+          <span class="ad-slot-caption">Partner Ad (160×600)</span>
+          <div class="ad-banner-wrap" data-ad-key="a1966a2c8cde0acd7d2e228524f06e0b" data-ad-src="https://bicea.org/22/a1966a2c8cde0acd7d2e228524f06e0b" data-ad-w="160" data-ad-h="600"></div>
+        </div>
       </div>
     </section>
 
@@ -1864,18 +1855,9 @@
       </div>
       <div id="watchCard" class="watch-card">Loading post...</div>
 
-      <!-- Banner 300x250 Below Watch Card -->
-      <div class="ad-slot-box" style="margin-top: 20px;">
-        <script>
-          atOptions = {
-            'key' : 'bcc3ee117ea9308e060c930e2abe4fb7',
-            'format' : 'iframe',
-            'height' : 250,
-            'width' : 300,
-            'params' : {}
-          };
-        </script>
-        <script data-cfasync="false" src="https://bicea.org/22/bcc3ee117ea9308e060c930e2abe4fb7"></script>
+      <div class="ad-slot-card" style="max-width: 560px; margin: 18px auto 0;">
+        <span class="ad-slot-caption">Sponsored</span>
+        <div class="ad-banner-wrap" data-ad-key="bcc3ee117ea9308e060c930e2abe4fb7" data-ad-src="https://bicea.org/22/bcc3ee117ea9308e060c930e2abe4fb7" data-ad-w="300" data-ad-h="250"></div>
       </div>
 
       <div id="relatedSection" class="related-wrap" style="display: none;">
@@ -1984,6 +1966,33 @@
       "https://asiafilm.org/4/e52c3b1d124be748dd09663d33a3e7f3"
     ];
 
+    function mountIsolatedBanner(container) {
+      if (!container || container.dataset.adMounted === "true") return;
+      const key = container.dataset.adKey;
+      const src = container.dataset.adSrc;
+      const w = Number(container.dataset.adW || 300);
+      const h = Number(container.dataset.adH || 250);
+      if (!key || !src) return;
+
+      container.dataset.adMounted = "true";
+      const iframe = document.createElement("iframe");
+      iframe.width = String(w);
+      iframe.height = String(h);
+      iframe.style.width = `${w}px`;
+      iframe.style.height = `${h}px`;
+      iframe.style.maxWidth = "100%";
+      iframe.setAttribute("scrolling", "no");
+      iframe.setAttribute("frameborder", "0");
+      iframe.setAttribute("allowtransparency", "true");
+      iframe.srcdoc = `<!DOCTYPE html><html><head><style>*{margin:0;padding:0;box-sizing:border-box;}body{background:transparent;display:flex;align-items:center;justify-content:center;overflow:hidden;}</style></head><body><script>atOptions={'key':'${key}','format':'iframe','height':${h},'width':${w},'params':{}};<\/script><script data-cfasync="false" src="${src}"><\/script></body></html>`;
+      container.innerHTML = "";
+      container.appendChild(iframe);
+    }
+
+    function initAllBannerSlots() {
+      document.querySelectorAll(".ad-banner-wrap[data-ad-key]").forEach(mountIsolatedBanner);
+    }
+
     function createEmptyStepArray(val) {
       return Array.from({ length: TOTAL_UNLOCK_STEPS }, () => val);
     }
@@ -2024,7 +2033,7 @@
     const videoGrid = document.getElementById("videoGrid");
     const paginationWrap = document.getElementById("paginationWrap");
     const paginationMeta = document.getElementById("paginationMeta");
-    const paginationBar = document.getElementById("paginationBar");
+    const paginationControls = document.getElementById("paginationControls");
     const videoCount = document.getElementById("videoCount");
     const navTotalViews = document.getElementById("navTotalViews");
     const navTotalUnlocks = document.getElementById("navTotalUnlocks");
@@ -2056,22 +2065,22 @@
     const manageList = document.getElementById("manageList");
     const toastEl = document.getElementById("toast");
 
-    let welcomeDismissedInCurrentHomeSession = false;
-
     function dismissWelcomePopup() {
       welcomePopupOverlay.classList.remove("open");
-      welcomeDismissedInCurrentHomeSession = true;
+      try { sessionStorage.setItem("ph_welcome_popup_seen", "1"); } catch {}
     }
 
     function maybeShowWelcomePopup() {
       const hash = window.location.hash || "#home";
       if (hash.startsWith("#watch=") || hash === "#studio") return;
-      if (welcomeDismissedInCurrentHomeSession) return;
+      try {
+        if (sessionStorage.getItem("ph_welcome_popup_seen") === "1") return;
+      } catch {}
       setTimeout(() => {
-        if ((window.location.hash || "#home") === "#home" && !welcomeDismissedInCurrentHomeSession) {
+        if ((window.location.hash || "#home") === "#home") {
           welcomePopupOverlay.classList.add("open");
         }
-      }, 150);
+      }, 220);
     }
 
     closeWelcomePopupBtn.addEventListener("click", dismissWelcomePopup);
@@ -2513,7 +2522,7 @@
       const candidates = allVideos.filter((v) => v._key !== currentItem._key);
       const words = (currentItem.title || "")
         .toLowerCase()
-        .split(/[^a-z0-9඀-෿]+/i)
+        .split(/[^a-z0-9\u0D80-\u0DFF]+/i)
         .filter((w) => w.length >= 3);
 
       return candidates
@@ -2721,6 +2730,7 @@
 
       mountUnlockPopup(item, botTargetUrl);
       renderRelatedPosts(postId, postJustUnlocked);
+      initAllBannerSlots();
 
       if (unlockPopupDismissedForPost !== postId) {
         unlockModalOverlay.classList.add("open");
@@ -2824,18 +2834,13 @@
           maybeShowWelcomePopup();
         }
       }
+      initAllBannerSlots();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     window.addEventListener("hashchange", handleRoute);
-    document.getElementById("brandHomeBtn").addEventListener("click", () => {
-      welcomeDismissedInCurrentHomeSession = false;
-      navigateTo("#home");
-    });
-    navHomeBtn.addEventListener("click", () => {
-      welcomeDismissedInCurrentHomeSession = false;
-      navigateTo("#home");
-    });
+    document.getElementById("brandHomeBtn").addEventListener("click", () => navigateTo("#home"));
+    navHomeBtn.addEventListener("click", () => navigateTo("#home"));
     navStudioBtn.addEventListener("click", () => navigateTo("#studio"));
     document.getElementById("backFromWatchBtn").addEventListener("click", () => navigateTo("#home"));
 
@@ -2998,92 +3003,83 @@
       });
     }
 
-    function resetPagination() {
-      currentPage = 1;
+    function goToPage(pageNum, totalPages, shouldScroll = true) {
+      currentPage = Math.max(1, Math.min(totalPages, pageNum));
+      renderHomeGrid();
+      if (shouldScroll) {
+        const topTarget = document.querySelector(".toolbar") || videoGrid;
+        topTarget.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
 
-    function getPageNumbers(totalPages, activePage) {
-      if (totalPages <= 7) {
-        return Array.from({ length: totalPages }, (_, i) => i + 1);
+    function buildPageItems(page, total) {
+      if (total <= 7) {
+        return Array.from({ length: total }, (_, i) => i + 1);
       }
-      if (activePage <= 4) {
-        return [1, 2, 3, 4, 5, "...", totalPages];
+      const pages = new Set([1, total, page - 1, page, page + 1]);
+      if (page <= 3) {
+        pages.add(2);
+        pages.add(3);
+        pages.add(4);
       }
-      if (activePage >= totalPages - 3) {
-        return [1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+      if (page >= total - 2) {
+        pages.add(total - 1);
+        pages.add(total - 2);
+        pages.add(total - 3);
       }
-      return [1, "...", activePage - 1, activePage, activePage + 1, "...", totalPages];
+      const sorted = [...pages].filter((p) => p >= 1 && p <= total).sort((a, b) => a - b);
+      const out = [];
+      for (let i = 0; i < sorted.length; i++) {
+        if (i > 0 && sorted[i] - sorted[i - 1] > 1) {
+          out.push("...");
+        }
+        out.push(sorted[i]);
+      }
+      return out;
     }
 
-    function renderPagination(totalItems, totalPages) {
+    function renderPagination(totalItems, totalPages, startIdx, endIdx) {
       if (totalItems <= POSTS_PER_PAGE || totalPages <= 1) {
         paginationWrap.classList.remove("show");
-        paginationBar.innerHTML = "";
+        paginationControls.innerHTML = "";
         return;
       }
 
-      const startItem = (currentPage - 1) * POSTS_PER_PAGE + 1;
-      const endItem = Math.min(currentPage * POSTS_PER_PAGE, totalItems);
-      paginationMeta.textContent = `Page ${currentPage} of ${totalPages} • Showing ${startItem}–${endItem} of ${totalItems} posts`;
-
-      paginationBar.innerHTML = "";
+      paginationWrap.classList.add("show");
+      paginationMeta.textContent = `Showing ${startIdx + 1}–${endIdx} of ${totalItems} posts • Page ${currentPage} of ${totalPages}`;
+      paginationControls.innerHTML = "";
 
       const prevBtn = document.createElement("button");
       prevBtn.type = "button";
-      prevBtn.className = "page-num-btn";
-      prevBtn.textContent = "‹";
-      prevBtn.title = "Previous Page";
-      prevBtn.disabled = currentPage === 1;
-      prevBtn.addEventListener("click", () => {
-        if (currentPage > 1) {
-          currentPage--;
-          renderHomeGrid();
-          document.querySelector(".toolbar")?.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      });
-      paginationBar.appendChild(prevBtn);
+      prevBtn.className = "page-nav-btn";
+      prevBtn.textContent = "← Prev";
+      prevBtn.disabled = currentPage <= 1;
+      prevBtn.addEventListener("click", () => goToPage(currentPage - 1, totalPages));
+      paginationControls.appendChild(prevBtn);
 
-      const pageItems = getPageNumbers(totalPages, currentPage);
-      pageItems.forEach((p) => {
-        if (p === "...") {
+      buildPageItems(currentPage, totalPages).forEach((entry) => {
+        if (entry === "...") {
           const dots = document.createElement("span");
           dots.className = "page-ellipsis";
-          dots.textContent = "...";
-          paginationBar.appendChild(dots);
+          dots.textContent = "…";
+          paginationControls.appendChild(dots);
           return;
         }
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = `page-num-btn ${p === currentPage ? "active" : ""}`;
-        btn.textContent = String(p);
-        btn.setAttribute("aria-label", `Page ${p}`);
-        if (p === currentPage) btn.setAttribute("aria-current", "page");
-        btn.addEventListener("click", () => {
-          if (currentPage !== p) {
-            currentPage = p;
-            renderHomeGrid();
-            document.querySelector(".toolbar")?.scrollIntoView({ behavior: "smooth", block: "start" });
-          }
-        });
-        paginationBar.appendChild(btn);
+        const pBtn = document.createElement("button");
+        pBtn.type = "button";
+        pBtn.className = `page-num-btn ${entry === currentPage ? "active-page" : ""}`;
+        pBtn.textContent = String(entry);
+        pBtn.addEventListener("click", () => goToPage(entry, totalPages));
+        paginationControls.appendChild(pBtn);
       });
 
       const nextBtn = document.createElement("button");
       nextBtn.type = "button";
-      nextBtn.className = "page-num-btn";
-      nextBtn.textContent = "›";
-      nextBtn.title = "Next Page";
-      nextBtn.disabled = currentPage === totalPages;
-      nextBtn.addEventListener("click", () => {
-        if (currentPage < totalPages) {
-          currentPage++;
-          renderHomeGrid();
-          document.querySelector(".toolbar")?.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      });
-      paginationBar.appendChild(nextBtn);
-
-      paginationWrap.classList.add("show");
+      nextBtn.className = "page-nav-btn";
+      nextBtn.textContent = "Next →";
+      nextBtn.disabled = currentPage >= totalPages;
+      nextBtn.addEventListener("click", () => goToPage(currentPage + 1, totalPages));
+      paginationControls.appendChild(nextBtn);
     }
 
     document.querySelectorAll(".tab-btn").forEach((btn) => {
@@ -3091,7 +3087,7 @@
         document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
         currentFilter = btn.dataset.filter;
-        resetPagination();
+        currentPage = 1;
         renderHomeGrid();
       });
     });
@@ -3102,21 +3098,21 @@
 
     searchInput.addEventListener("input", () => {
       syncClearSearchBtn();
-      resetPagination();
+      currentPage = 1;
       renderHomeGrid();
     });
 
     clearSearchBtn.addEventListener("click", () => {
       searchInput.value = "";
       syncClearSearchBtn();
-      resetPagination();
+      currentPage = 1;
       renderHomeGrid();
       searchInput.focus();
     });
 
     sortSelect.addEventListener("change", (e) => {
       currentSort = e.target.value;
-      resetPagination();
+      currentPage = 1;
       renderHomeGrid();
     });
 
@@ -3169,11 +3165,11 @@
 
       const totalPages = Math.max(1, Math.ceil(list.length / POSTS_PER_PAGE));
       if (currentPage > totalPages) currentPage = totalPages;
+      const startIdx = (currentPage - 1) * POSTS_PER_PAGE;
+      const endIdx = Math.min(list.length, startIdx + POSTS_PER_PAGE);
+      const visibleList = list.slice(startIdx, endIdx);
 
-      const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
-      const pageSlice = list.slice(startIndex, startIndex + POSTS_PER_PAGE);
-
-      pageSlice.forEach((item, idx) => {
+      visibleList.forEach((item, idx) => {
         const src = item.source || (item.telegram_file_id ? "group" : "manual");
         const dateText = item.created_at ? new Date(item.created_at * 1000).toLocaleDateString() : "";
         const hotBadge = isTrendingPost(item) ? `<span class="trending-badge">🔥 Trending</span>` : "";
@@ -3229,7 +3225,7 @@
         videoGrid.appendChild(card);
       });
 
-      renderPagination(list.length, totalPages);
+      renderPagination(list.length, totalPages, startIdx, endIdx);
     }
 
     async function fetchVideos() {
@@ -3259,6 +3255,7 @@
     renderSkeletonGrid();
     fetchVideos();
     handleRoute();
+    initAllBannerSlots();
     setInterval(fetchVideos, 8000);
   </script>
 </body>
